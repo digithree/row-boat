@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation.xml"
+    app:startDestination="@id/local_collection_fragment">
+
+    <fragment
+        android:id="@+id/local_collection_fragment"
+        android:name="co.simonkenny.row.collection.LocalCollectionFragment"
+        android:label="LocalCollectionFragment"
+        tools:layout="@layout/frag_local_collection"/>
+
+    <fragment
+        android:id="@+id/reader_fragment"
+        android:name="co.simonkenny.row.reader.ReaderFragment"
+        android:label="ReaderFragment"
+        tools:layout="@layout/frag_reader"/>
+
+    <fragment
+        android:id="@+id/search_fragment"
+        android:name="co.simonkenny.row.search.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/frag_search"/>
+
+    <fragment
+        android:id="@+id/settings_fragment"
+        android:name="co.simonkenny.row.settings.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/frag_settings"/>
+</navigation>
