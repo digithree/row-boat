@@ -1,7 +1,5 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -32,21 +30,24 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    // Module dependencies
     implementation project(':reader')
     implementation project(':search')
     implementation project(':settings')
     implementation project(':collection')
     implementation project(':base')
-    //implementation project(':core')
+    implementation project(':core')
 
+    // Std lib
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
+    // Navigation
     implementation"android.arch.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "android.arch.navigation:navigation-ui-ktx:$navigationVersion"
 
+    // Testing
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
