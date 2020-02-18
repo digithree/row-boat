@@ -6,7 +6,7 @@
         android:title="@string/reader" />
 
     <item
-        android:id="@+id/search_fragment"
+        android:id="@+id/search_action"
         android:icon="@drawable/ic_search"
         android:title="@string/search" />
 

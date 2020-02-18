@@ -1,4 +1,9 @@
 <resources>
+    <!-- searchable interface -->
+    <string name="app_label">Row Boat</string>
+    <string name="search_hint">Search ROW</string>
+
+    <!-- screens -->
     <string name="reader">Reader</string>
     <string name="local_collection">Local Collection</string>
     <string name="search">Search</string>

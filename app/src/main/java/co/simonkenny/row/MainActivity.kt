@@ -1,5 +1,7 @@
 package co.simonkenny.row
 
+import android.app.SearchManager
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -8,6 +10,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import co.simonkenny.row.databinding.ActivityMainBinding
 
@@ -30,13 +33,33 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        binding.bottomNav.setupWithNavController(navController)
+        binding.bottomNav.apply {
+            // can't use this as setOnNavigationItemSelectedListener needed below replaces it
+            //setupWithNavController(navController)
+
+            // it doesn't look like there's a way to get this for free, have to call searchAction
+            // manually
+            setOnNavigationItemSelectedListener {
+                when (it.itemId) {
+                    R.id.search_action -> navController.navigate(NavigationXmlDirections.searchAction(""))
+                    else -> navController.navigate(it.itemId)
+                }
+                true
+            }
+        }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.bottomNav.visibility = if (destination.id == R.id.settings_fragment) {
                 View.GONE
             } else {
                 View.VISIBLE
+            }
+        }
+
+        // handle incoming search
+        if (Intent.ACTION_SEARCH == intent.action) {
+            intent.getStringExtra(SearchManager.QUERY)?.also { query ->
+                navController.navigate(NavigationXmlDirections.searchAction(query))
             }
         }
     }

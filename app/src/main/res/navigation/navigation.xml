@@ -17,15 +17,16 @@
         android:label="ReaderFragment"
         tools:layout="@layout/frag_reader"/>
 
-    <fragment
-        android:id="@+id/search_fragment"
-        android:name="co.simonkenny.row.search.SearchFragment"
-        android:label="SearchFragment"
-        tools:layout="@layout/frag_search"/>
+    <action
+        android:id="@+id/search_action"
+        app:destination="@+id/search_navigation">
+        <argument
+            android:name="query"
+            app:argType="string"
+            app:nullable="false" />
+    </action>
 
-    <fragment
-        android:id="@+id/settings_fragment"
-        android:name="co.simonkenny.row.settings.SettingsFragment"
-        android:label="SettingsFragment"
-        tools:layout="@layout/frag_settings"/>
+    <include app:graph="@navigation/search_navigation" />
+
+    <include app:graph="@navigation/settings_navigation" />
 </navigation>
