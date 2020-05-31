@@ -76,6 +76,12 @@ class SearchFragment : Fragment() {
         }
         viewModel.searchResultList.observe(viewLifecycleOwner,
             Observer { processObserved(it) })
+        viewModel.errorEvent.observe(viewLifecycleOwner, Observer {
+            binding.pbSearch.isGone = true
+            showWelcomeState(false)
+            it.printStackTrace()
+            Toast.makeText(context, "Error searching for query ${args.query}", Toast.LENGTH_SHORT).show()
+        })
         Log.d("SearchFragment", "query: $args.query")
         when {
             args.query.isNotBlank() -> {
@@ -95,12 +101,7 @@ class SearchFragment : Fragment() {
                 showWelcomeState(false)
                 searchListAdapter.submitList(observed.data)
             }
-            is UiState.Error -> {
-                binding.pbSearch.isGone = true
-                showWelcomeState(false)
-                observed.exception.printStackTrace()
-                Toast.makeText(context, "Error searching for query ${args.query}", Toast.LENGTH_SHORT).show()
-            }
+            // moved error handling to separate LiveData, so get last working result here
             is UiState.Loading -> {
                 binding.pbSearch.isVisible = true
                 showWelcomeState(false)

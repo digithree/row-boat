@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="article_full_padding">12dp</dimen>
+    <dimen name="article_full_padding">20dp</dimen>
 
     <dimen name="article_title_size">24sp</dimen>
     <dimen name="article_info_size">18sp</dimen>
