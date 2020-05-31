@@ -25,11 +25,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    private lateinit var appNavigation: AppNavigation
+
+    private lateinit var searchMenuItem: MenuItem
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         val navController = findNavController(this, R.id.nav_host_fragment)
+
+        appNavigation = AppNavigation(navController)
 
         appBarConfiguration = AppBarConfiguration(setOf(
             R.id.collection_fragment,
@@ -51,6 +58,7 @@ class MainActivity : AppCompatActivity() {
                     R.id.article_action -> navController.navigate(NavigationXmlDirections.articleAction(""))
                     else -> navController.navigate(it.itemId)
                 }
+                searchMenuItem.collapseActionView()
                 true
             }
         }
@@ -79,7 +87,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_toolbar, menu)
-        (menu?.findItem(R.id.app_bar_search)?.actionView as SearchView).run {
+        searchMenuItem = requireNotNull(menu?.findItem(R.id.app_bar_search))
+        (searchMenuItem.actionView as SearchView).run {
             setSearchableInfo((getSystemService(Context.SEARCH_SERVICE) as SearchManager)
                 .getSearchableInfo(componentName))
         }
@@ -91,6 +100,15 @@ class MainActivity : AppCompatActivity() {
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
+    override fun onStart() {
+        super.onStart()
+        appNavigation.registerReceiver(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        appNavigation.unregisterReceiver(this)
+    }
 
     // private helpers
 

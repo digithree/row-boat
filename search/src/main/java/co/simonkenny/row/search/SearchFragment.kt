@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.simonkenny.row.core.UiState
 import co.simonkenny.row.core.di.FakeDI
+import co.simonkenny.row.navigation.Navigate
 import co.simonkenny.row.search.databinding.FragSearchBinding
 import java.lang.IllegalArgumentException
 
@@ -49,7 +50,8 @@ class SearchFragment : Fragment() {
         object: SearchListAdapter.Callback {
             override fun onTap(url: String) {
                 Log.d("SearchFragment", "tap on item with URL: $url")
-                startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
+                //startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
+                Navigate.toReader(requireContext(), url)
             }
         }
     )

@@ -1,0 +1,14 @@
+apply from: "$rootDir/common-lib.gradle"
+
+// no specific android config
+
+//android {
+// ...
+//}
+
+
+// no specific dependencies
+
+//dependencies {
+// ...
+//}
