@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import co.simonkenny.row.collection.databinding.FragLocalCollectionBinding
+import co.simonkenny.row.collection.databinding.FragCollectionBinding
 
-class LocalCollectionFragment : Fragment() {
+class CollectionFragment : Fragment() {
 
-    private lateinit var binding: FragLocalCollectionBinding
+    private lateinit var binding: FragCollectionBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -18,7 +18,7 @@ class LocalCollectionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater,
-            R.layout.frag_local_collection, container, false)
+            R.layout.frag_collection, container, false)
         return binding.root
     }
 }

@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/local_collection_fragment"
-        android:name="co.simonkenny.row.collection.LocalCollectionFragment"
+        android:name="co.simonkenny.row.collection.CollectionFragment"
         android:label="LocalCollectionFragment"
-        tools:layout="@layout/frag_local_collection"/>
+        tools:layout="@layout/frag_collection"/>
 
     <fragment
         android:id="@+id/reader_fragment"

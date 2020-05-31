@@ -1,7 +1,7 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
 
 android {
@@ -9,7 +9,6 @@ android {
     buildToolsVersion build_tools_version
 
     defaultConfig {
-        applicationId "co.simonkenny.row"
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
         versionCode version_code
@@ -46,18 +45,9 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    // module dependencies
-    implementation project(':reader')
-    implementation project(':search')
-    implementation project(':settings')
-    implementation project(':collection')
-    implementation project(':base')
-    implementation project(':core')
-
     // core
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$app_compat_version"
     implementation "androidx.core:core-ktx:$ktx_version"
 
@@ -68,5 +58,4 @@ dependencies {
     // testing
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
