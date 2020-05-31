@@ -5,6 +5,7 @@
         android:layout_height="match_parent">
 
         <ScrollView
+            android:id="@+id/sv_reader_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true">
@@ -59,6 +60,34 @@
                     android:textColor="@android:color/primary_text_light"/>
             </LinearLayout>
         </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/ll_reader_welcome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/welcome_margin">
+
+            <TextView
+                android:id="@+id/tv_reader_welcome_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/welcome_title_size"
+                android:textColor="@android:color/primary_text_light"
+                android:text="@string/reader_welcome_title"/>
+
+            <TextView
+                android:id="@+id/tv_reader_welcome_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/welcome_info_vert_margin"
+                android:ellipsize="end"
+                android:textSize="@dimen/welcome_info_size"
+                android:textColor="@android:color/secondary_text_light"
+                android:text="@string/reader_welcome_body"/>
+
+        </LinearLayout>
 
         <ProgressBar
             android:id="@+id/pb_reader"

@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/reader_fragment"
         android:name="co.simonkenny.row.reader.ReaderFragment"
-        android:label="ReaderFragment"
+        android:label="@string/reader"
         tools:layout="@layout/frag_reader">
         <argument
             android:name="url"

@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/search_fragment"
         android:name="co.simonkenny.row.search.SearchFragment"
-        android:label="SearchFragment"
+        android:label="@string/search"
         tools:layout="@layout/frag_search">
         <argument
             android:name="query"

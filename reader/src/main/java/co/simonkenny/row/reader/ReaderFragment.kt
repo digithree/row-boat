@@ -43,7 +43,7 @@ class ReaderFragment : Fragment() {
     private val args: ReaderFragmentArgs by navArgs()
 
     private val viewModel: ReaderViewModel by lazy {
-        ViewModelProvider(this, object: ViewModelProvider.Factory {
+        ViewModelProvider(requireActivity().viewModelStore, object: ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
                 if (modelClass == ReaderViewModel::class.java) {
@@ -65,6 +65,8 @@ class ReaderFragment : Fragment() {
             tvReaderUrl.typeface = typefaceMono
             tvReaderAttribution.typeface = typefaceRegular
             tvReaderPublisher.typeface = typefaceRegular
+            tvReaderWelcomeTitle.typeface = typefaceBold
+            tvReaderWelcomeBody.typeface = typefaceRegular
             // enable auto-html links
             tvReaderUrl.movementMethod = LinkMovementMethod.getInstance()
             tvReaderPublisher.movementMethod = LinkMovementMethod.getInstance()
@@ -75,24 +77,39 @@ class ReaderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.article.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is UiState.Success -> {
-                    binding.pbReader.isGone = true
-                    setData(it.data)
-                }
-                is UiState.Error -> {
-                    binding.pbReader.isGone = true
-                    it.exception.printStackTrace()
-                    Toast.makeText(context, "Error fetching article for URL ${args.url}", Toast.LENGTH_SHORT).show()
-                }
-                is UiState.Loading -> binding.pbReader.isVisible = true
-            }
-        })
+        viewModel.article.observe(viewLifecycleOwner,
+            Observer { processObserved(it) })
         Log.d("ReaderFragment", "URL: $args.url")
-        viewModel.fetchArticle(args.url)
+        when {
+            args.url.isNotBlank() -> {
+                viewModel.fetchArticle(args.url)
+                showWelcomeState(false)
+            }
+            viewModel.article.value != null ->
+                processObserved(requireNotNull(viewModel.article.value))
+            else -> showWelcomeState(true)
+        }
     }
 
+    private fun processObserved(observed: UiState<Article>) {
+        when (observed) {
+            is UiState.Success -> {
+                binding.pbReader.isGone = true
+                showWelcomeState(false)
+                setData(observed.data)
+            }
+            is UiState.Error -> {
+                binding.pbReader.isGone = true
+                showWelcomeState(false)
+                observed.exception.printStackTrace()
+                Toast.makeText(context, "Error fetching article for URL ${args.url}", Toast.LENGTH_SHORT).show()
+            }
+            is UiState.Loading -> {
+                binding.pbReader.isVisible = true
+                showWelcomeState(false)
+            }
+        }
+    }
 
     private fun setData(article: Article) {
         with (binding) {
@@ -161,6 +178,16 @@ class ReaderFragment : Fragment() {
                     // finally, set to TextView
                     tvReaderBody.text = builder
                 } ?: run { tvReaderBody.text = "No Article Body" }
+            }
+        }
+    }
+
+    private fun showWelcomeState(show: Boolean) {
+        with (binding) {
+            llReaderWelcome.isVisible = show
+            svReaderContent.isGone = show
+            if (show) {
+                pbReader.isVisible = false
             }
         }
     }

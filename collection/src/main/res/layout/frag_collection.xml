@@ -7,11 +7,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_local_collection_temp_title"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/ll_collection_welcome"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_gravity="center"
-            android:text="Local Collection" />
+            android:layout_margin="@dimen/welcome_margin">
+
+            <TextView
+                android:id="@+id/tv_collection_welcome_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/welcome_title_size"
+                android:textColor="@android:color/primary_text_light"
+                android:text="@string/collection_welcome_title"/>
+
+            <TextView
+                android:id="@+id/tv_collection_welcome_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/welcome_info_vert_margin"
+                android:ellipsize="end"
+                android:textSize="@dimen/welcome_info_size"
+                android:textColor="@android:color/secondary_text_light"
+                android:text="@string/collection_welcome_body"/>
+
+        </LinearLayout>
     </FrameLayout>
 </layout>

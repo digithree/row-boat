@@ -1,5 +1,6 @@
 package co.simonkenny.row.collection
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +13,12 @@ class CollectionFragment : Fragment() {
 
     private lateinit var binding: FragCollectionBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater,
-            R.layout.frag_collection, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.frag_collection, container, false)
+        with (binding) {
+            tvCollectionWelcomeTitle.typeface = Typeface.createFromAsset(context?.assets, "fonts/LibreBaskerville-Bold.ttf")
+            tvCollectionWelcomeBody.typeface = Typeface.createFromAsset(context?.assets, "fonts/LibreBaskerville-Regular.ttf")
+        }
         return binding.root
     }
 }

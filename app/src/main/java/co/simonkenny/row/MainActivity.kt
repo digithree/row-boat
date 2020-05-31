@@ -9,13 +9,16 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
+import androidx.core.util.PatternsCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
+import co.simonkenny.row.base.Patterns
 import co.simonkenny.row.databinding.ActivityMainBinding
 import java.net.MalformedURLException
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(this, R.id.nav_host_fragment)
 
         appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.local_collection_fragment,
+            R.id.collection_fragment,
             R.id.search_fragment,
             R.id.reader_fragment
         ))
@@ -57,8 +60,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         // handle incoming search or URL, if any
-        handleSearchIntent(intent)
-        handleUrlIntent(intent)
+        if (!handleSearchIntent(intent) && !handleUrlIntent(intent)) {
+            navController.navigate(NavigationXmlDirections.searchAction(""))
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -90,20 +94,38 @@ class MainActivity : AppCompatActivity() {
 
     // private helpers
 
-    private fun handleSearchIntent(intent: Intent?) {
+    private fun handleSearchIntent(intent: Intent?): Boolean =
         with (findNavController(this, R.id.nav_host_fragment)) {
             intent?.let {
                 when (it.action) {
-                    Intent.ACTION_SEARCH -> intent.getStringExtra(SearchManager.QUERY)?.run {
-                        navigate(NavigationXmlDirections.searchAction(this))
+                    Intent.ACTION_SEARCH -> {
+                        intent.getStringExtra(SearchManager.QUERY)?.run {
+                            // first check search query for !url bang
+                            if (trim().toLowerCase(Locale.US).startsWith("!url")) {
+                                val parts = trim().split(" ")
+                                if (parts.size == 2) {
+                                    navigate(NavigationXmlDirections.articleAction(parts[1]))
+                                    return@with true
+                                }
+                            }
+                            // next, see if query matches web url link pattern
+                            val matcher = Patterns.AUTOLINK_WEB_URL.matcher(this)
+                            if (matcher.find()) {
+                                navigate(NavigationXmlDirections.articleAction(this))
+                            } else {
+                                // otherwise, treat as search query
+                                navigate(NavigationXmlDirections.searchAction(this))
+                            }
+                            return@with true
+                        }
                     }
                     else -> Log.d("MainActivity", "handleSearchIntent nothing to handle")
                 }
             }
+            false
         }
-    }
 
-    private fun handleUrlIntent(intent: Intent?) {
+    private fun handleUrlIntent(intent: Intent?): Boolean =
         with (findNavController(this, R.id.nav_host_fragment)) {
             intent?.let {
                 when (it.action) {
@@ -111,6 +133,7 @@ class MainActivity : AppCompatActivity() {
                         try {
                             intent.data?.toString()?.run {
                                 navigate(NavigationXmlDirections.articleAction(this))
+                                return@with true
                             } ?: Log.e("MainActivity", "handleUrlIntent no URL data")
                         } catch (e: MalformedURLException) {
                             e.printStackTrace()
@@ -120,6 +143,6 @@ class MainActivity : AppCompatActivity() {
                     else -> Log.d("MainActivity", "handleSearchIntent nothing to handle")
                 }
             }
+            false
         }
-    }
 }

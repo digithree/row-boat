@@ -7,8 +7,6 @@ apply from: "$rootDir/common-lib.gradle"
 //}
 
 
-// no specific dependencies
-
-//dependencies {
-// ...
-//}
+dependencies {
+    implementation project(':base')
+}

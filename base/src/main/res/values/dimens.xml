@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="welcome_title_size">24sp</dimen>
+    <dimen name="welcome_info_size">18sp</dimen>
+    <dimen name="welcome_info_vert_margin">20dp</dimen>
+    <dimen name="welcome_margin">60dp</dimen>
+</resources>

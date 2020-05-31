@@ -15,7 +15,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 internal class SearchViewModel(
-    private val retrofit: Retrofit,
+    retrofit: Retrofit,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ): ViewModel() {
 

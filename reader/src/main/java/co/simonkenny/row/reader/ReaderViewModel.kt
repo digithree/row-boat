@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 
 class ReaderViewModel(
-    private val retrofit: Retrofit,
+    retrofit: Retrofit,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ): ViewModel() {
 

@@ -1,6 +1,7 @@
 package co.simonkenny.row.search
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -33,7 +34,7 @@ class SearchFragment : Fragment() {
     private val args: SearchFragmentArgs by navArgs()
 
     private val viewModel: SearchViewModel by lazy {
-        ViewModelProvider(this, object: ViewModelProvider.Factory {
+        ViewModelProvider(requireActivity().viewModelStore, object: ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
                 if (modelClass == SearchViewModel::class.java) {
@@ -55,6 +56,10 @@ class SearchFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.frag_search, container, false)
+        with (binding) {
+            tvSearchWelcomeTitle.typeface = Typeface.createFromAsset(context?.assets, "fonts/LibreBaskerville-Bold.ttf")
+            tvSearchWelcomeBody.typeface = Typeface.createFromAsset(context?.assets, "fonts/LibreBaskerville-Regular.ttf")
+        }
         return binding.root
     }
 
@@ -67,21 +72,47 @@ class SearchFragment : Fragment() {
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             }
         }
-        viewModel.searchResultList.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is UiState.Success -> {
-                    binding.pbSearch.isGone = true
-                    searchListAdapter.submitList(it.data)
-                }
-                is UiState.Error -> {
-                    binding.pbSearch.isGone = true
-                    it.exception.printStackTrace()
-                    Toast.makeText(context, "Error searching for query ${args.query}", Toast.LENGTH_SHORT).show()
-                }
-                is UiState.Loading -> binding.pbSearch.isVisible = true
-            }
-        })
+        viewModel.searchResultList.observe(viewLifecycleOwner,
+            Observer { processObserved(it) })
         Log.d("SearchFragment", "query: $args.query")
-        viewModel.search(args.query)
+        when {
+            args.query.isNotBlank() -> {
+                viewModel.search(args.query)
+                showWelcomeState(false)
+            }
+            viewModel.searchResultList.value != null ->
+                processObserved(requireNotNull(viewModel.searchResultList.value))
+            else -> showWelcomeState(true)
+        }
+    }
+
+    private fun processObserved(observed: UiState<List<SearchResultItem>>) {
+        when (observed) {
+            is UiState.Success -> {
+                binding.pbSearch.isGone = true
+                showWelcomeState(false)
+                searchListAdapter.submitList(observed.data)
+            }
+            is UiState.Error -> {
+                binding.pbSearch.isGone = true
+                showWelcomeState(false)
+                observed.exception.printStackTrace()
+                Toast.makeText(context, "Error searching for query ${args.query}", Toast.LENGTH_SHORT).show()
+            }
+            is UiState.Loading -> {
+                binding.pbSearch.isVisible = true
+                showWelcomeState(false)
+            }
+        }
+    }
+
+    private fun showWelcomeState(show: Boolean) {
+        with (binding) {
+            llSearchWelcome.isVisible = show
+            rvSearch.isGone = show
+            if (show) {
+                pbSearch.isVisible = false
+            }
+        }
     }
 }
