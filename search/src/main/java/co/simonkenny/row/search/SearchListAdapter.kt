@@ -30,7 +30,7 @@ internal class SearchListAdapter(
             with (getItem(position)) {
                 setTitle(title)
                 setSubtitle(url)
-                setOnClickListener { callback.onTap(url) }
+                setClickHandler { callback.onTap(url) }
             }
         }
     }

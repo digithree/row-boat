@@ -15,6 +15,7 @@ import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
 import co.simonkenny.row.databinding.ActivityMainBinding
+import java.net.MalformedURLException
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity() {
             setOnNavigationItemSelectedListener {
                 when (it.itemId) {
                     R.id.search_action -> navController.navigate(NavigationXmlDirections.searchAction(""))
+                    R.id.article_action -> navController.navigate(NavigationXmlDirections.articleAction(""))
                     else -> navController.navigate(it.itemId)
                 }
                 true
@@ -54,14 +56,16 @@ class MainActivity : AppCompatActivity() {
             binding.bottomNav.isVisible = destination.id != R.id.settings_fragment
         }
 
-        // handle incoming search, if any
+        // handle incoming search or URL, if any
         handleSearchIntent(intent)
+        handleUrlIntent(intent)
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        // handle incoming search, if any
+        // handle incoming search or URL, if any
         handleSearchIntent(intent)
+        handleUrlIntent(intent)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -90,8 +94,28 @@ class MainActivity : AppCompatActivity() {
         with (findNavController(this, R.id.nav_host_fragment)) {
             intent?.let {
                 when (it.action) {
-                    Intent.ACTION_SEARCH -> intent.getStringExtra(SearchManager.QUERY)?.also { query ->
-                        navigate(NavigationXmlDirections.searchAction(query))
+                    Intent.ACTION_SEARCH -> intent.getStringExtra(SearchManager.QUERY)?.run {
+                        navigate(NavigationXmlDirections.searchAction(this))
+                    }
+                    else -> Log.d("MainActivity", "handleSearchIntent nothing to handle")
+                }
+            }
+        }
+    }
+
+    private fun handleUrlIntent(intent: Intent?) {
+        with (findNavController(this, R.id.nav_host_fragment)) {
+            intent?.let {
+                when (it.action) {
+                    Intent.ACTION_VIEW -> {
+                        try {
+                            intent.data?.toString()?.run {
+                                navigate(NavigationXmlDirections.articleAction(this))
+                            } ?: Log.e("MainActivity", "handleUrlIntent no URL data")
+                        } catch (e: MalformedURLException) {
+                            e.printStackTrace()
+                            Log.e("MainActivity", "handleUrlIntent failed to parse URL")
+                        }
                     }
                     else -> Log.d("MainActivity", "handleSearchIntent nothing to handle")
                 }

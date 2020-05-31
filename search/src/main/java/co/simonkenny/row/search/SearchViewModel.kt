@@ -15,20 +15,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 internal class SearchViewModel(
+    private val retrofit: Retrofit,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ): ViewModel() {
 
-    // TODO : use DI to keep instances around for Application lifespan
-    private val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(ROW_BASE_URL)
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .build()
-
+    // TODO : wrap this in Repo pattern
     private val searchApi = retrofit.create(SearchApi::class.java)
-
 
     private val _searchResultList = MutableLiveData<UiState<List<SearchResultItem>>>()
     val searchResultList: LiveData<UiState<List<SearchResultItem>>> = _searchResultList

@@ -1,5 +1,7 @@
 package co.simonkenny.row.search
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,14 +15,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.simonkenny.row.core.UiState
+import co.simonkenny.row.core.di.FakeDI
 import co.simonkenny.row.search.databinding.FragSearchBinding
 import java.lang.IllegalArgumentException
 
 class SearchFragment : Fragment() {
+
+    private val retrofit = FakeDI.instance.retrofit
 
     private lateinit var binding: FragSearchBinding
     private val args: SearchFragmentArgs by navArgs()
@@ -29,7 +36,9 @@ class SearchFragment : Fragment() {
         ViewModelProvider(this, object: ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                if (modelClass == SearchViewModel::class.java) return SearchViewModel() as T
+                if (modelClass == SearchViewModel::class.java) {
+                    return SearchViewModel(retrofit) as T
+                }
                 throw IllegalArgumentException("Cannot create ViewMode of class ${modelClass.canonicalName}")
             }
         }).get(SearchViewModel::class.java)
@@ -38,8 +47,8 @@ class SearchFragment : Fragment() {
     private val searchListAdapter = SearchListAdapter(
         object: SearchListAdapter.Callback {
             override fun onTap(url: String) {
-                // TODO : navigate to reader with this URL
                 Log.d("SearchFragment", "tap on item with URL: $url")
+                startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
             }
         }
     )

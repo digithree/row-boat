@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="article_full_padding">12dp</dimen>
+
+    <dimen name="article_title_size">24sp</dimen>
+    <dimen name="article_info_size">18sp</dimen>
+    <dimen name="article_body_size">16sp</dimen>
+
+    <dimen name="article_info_vert_margin">20dp</dimen>
+    <dimen name="article_info_body_top_margin">40dp</dimen>
+</resources>
