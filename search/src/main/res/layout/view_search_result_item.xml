@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout
+        android:id="@+id/fl_search_result_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false">
+        <LinearLayout
+            android:id="@+id/ll_search_result_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="?selectableItemBackground"
+            android:padding="@dimen/search_result_item_padding"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:id="@+id/tv_search_result_item_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="@dimen/search_result_item_title_size"
+                android:textColor="@android:color/primary_text_light"/>
+
+            <TextView
+                android:id="@+id/tv_search_result_item_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/search_result_item_line_padding"
+                android:lines="1"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="@dimen/search_result_item_subtitle_size"
+                android:textColor="@android:color/secondary_text_light"/>
+
+        </LinearLayout>
+    </FrameLayout>
+</layout>
