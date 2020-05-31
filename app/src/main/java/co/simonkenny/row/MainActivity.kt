@@ -1,16 +1,18 @@
 package co.simonkenny.row
 
 import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import co.simonkenny.row.databinding.ActivityMainBinding
 
@@ -49,19 +51,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.bottomNav.visibility = if (destination.id == R.id.settings_fragment) {
-                View.GONE
-            } else {
-                View.VISIBLE
-            }
+            binding.bottomNav.isVisible = destination.id != R.id.settings_fragment
         }
 
-        // handle incoming search
-        if (Intent.ACTION_SEARCH == intent.action) {
-            intent.getStringExtra(SearchManager.QUERY)?.also { query ->
-                navController.navigate(NavigationXmlDirections.searchAction(query))
-            }
-        }
+        // handle incoming search, if any
+        handleSearchIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        // handle incoming search, if any
+        handleSearchIntent(intent)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -71,11 +71,31 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_toolbar, menu)
+        (menu?.findItem(R.id.app_bar_search)?.actionView as SearchView).run {
+            setSearchableInfo((getSystemService(Context.SEARCH_SERVICE) as SearchManager)
+                .getSearchableInfo(componentName))
+        }
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val navController = findNavController(this, R.id.nav_host_fragment)
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+    }
+
+
+    // private helpers
+
+    private fun handleSearchIntent(intent: Intent?) {
+        with (findNavController(this, R.id.nav_host_fragment)) {
+            intent?.let {
+                when (it.action) {
+                    Intent.ACTION_SEARCH -> intent.getStringExtra(SearchManager.QUERY)?.also { query ->
+                        navigate(NavigationXmlDirections.searchAction(query))
+                    }
+                    else -> Log.d("MainActivity", "handleSearchIntent nothing to handle")
+                }
+            }
+        }
     }
 }
