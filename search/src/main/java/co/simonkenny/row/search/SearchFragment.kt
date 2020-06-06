@@ -53,6 +53,11 @@ class SearchFragment : Fragment() {
                 //startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
                 Navigate.toReader(requireContext(), url)
             }
+
+            override fun onLongTap(url: String): Boolean {
+                Navigate.addToCollection(requireContext(), url)
+                return true
+            }
         }
     )
 

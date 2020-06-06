@@ -24,6 +24,9 @@ internal class SearchResultItemView(context: Context): LinearLayout(context) {
     fun setClickHandler(handler: () -> Unit) =
         binding.llSearchResultItem.setOnClickListener { handler() }
 
+    fun setLongClickHandler(handler: () -> Boolean) =
+        binding.llSearchResultItem.setOnLongClickListener { handler() }
+
     fun setTitle(title: String) {
         binding.tvSearchResultItemTitle.text = title
     }

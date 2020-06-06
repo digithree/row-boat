@@ -1,16 +1,15 @@
 package co.simonkenny.row
 
-import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
-import co.simonkenny.row.navigation.ARG_QUERY
-import co.simonkenny.row.navigation.ARG_URL
-import co.simonkenny.row.navigation.DESTINATION_READER
-import co.simonkenny.row.navigation.DESTINATION_SEARCH
+import co.simonkenny.row.collection.AddToCollectionBottomSheetDialogFragment
+import co.simonkenny.row.navigation.*
 
 class AppNavigation(
     private val navController: NavController
@@ -23,20 +22,32 @@ class AppNavigation(
                     .articleAction(intent.getStringExtra(ARG_URL) ?: ""))
                 DESTINATION_SEARCH -> navController.navigate(NavigationXmlDirections
                     .searchAction(intent.getStringExtra(ARG_QUERY) ?: ""))
+                DIALOG_ADD_TO_COLLECTION -> fragmentManager?.run {
+                    with (requireNotNull(intent.getStringExtra(ARG_URL))) {
+                        AddToCollectionBottomSheetDialogFragment
+                            .newInstance(this)
+                            .show(this@run,
+                                AddToCollectionBottomSheetDialogFragment::class.java.name)
+                    }
+                }
             }
         }
     }
 
+    private var fragmentManager: FragmentManager? = null
+
     private var isRegistered = false
 
-    fun registerReceiver(activity: Activity) {
+    fun registerReceiver(activity: AppCompatActivity) {
         activity.registerReceiver(broadcastReceiver, IntentFilter().apply {
-            listOf(DESTINATION_READER, DESTINATION_SEARCH).forEach { addAction(it) }
+            listOf(DESTINATION_READER, DESTINATION_SEARCH, DIALOG_ADD_TO_COLLECTION)
+                .forEach { addAction(it) }
         })
+        fragmentManager = activity.supportFragmentManager
         isRegistered = true
     }
 
-    fun unregisterReceiver(activity: Activity) {
+    fun unregisterReceiver(activity: AppCompatActivity) {
         if (isRegistered) {
             try {
                 activity.unregisterReceiver(broadcastReceiver)
@@ -45,5 +56,6 @@ class AppNavigation(
                 Log.e("AppNavigation", "Couldn't unregister receiver")
             }
         }
+        fragmentManager = null
     }
 }

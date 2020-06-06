@@ -21,13 +21,4 @@ class CollectionFragment : Fragment() {
         }
         return binding.root
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // TODO : temporarily hardcoded test for add to collection bottomsheet dialog fragment
-        AddToCollectionBottomSheetDialogFragment
-            .newInstance("https://io9.gizmodo.com/as-the-punisher-skull-re-emerges-on-cops-in-u-s-protes-1843911179")
-            .show(parentFragmentManager, AddToCollectionBottomSheetDialogFragment::class.java.name)
-    }
 }
