@@ -99,11 +99,22 @@ class ReaderFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        if (item.itemId == R.id.action_add_to_collection
-                && args.url.isNotBlank()) {
-            Navigate.addToCollection(requireContext(), args.url)
+        if (item.itemId == R.id.action_add_to_collection) {
+            if (args.url.isNotBlank()) {
+                Navigate.addToCollection(requireContext(), args.url)
+            } else if (viewModel.article.value != null) {
+                getUrlFromObserved(viewModel.article.value)?.run {
+                    Navigate.addToCollection(requireContext(), this)
+                } ?: Log.e("ReaderFragment", "Cant share URL")
+            } else Log.e("ReaderFragment", "Cant share URL")
             true
         } else super.onOptionsItemSelected(item)
+
+    private fun getUrlFromObserved(observed: UiState<Article>?): String? =
+        when (observed) {
+            is UiState.Success -> observed.data.url
+            else -> null
+        }
 
     private fun processObserved(observed: UiState<Article>) {
         when (observed) {
