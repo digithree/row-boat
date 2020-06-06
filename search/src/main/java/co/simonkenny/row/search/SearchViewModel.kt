@@ -18,17 +18,22 @@ internal class SearchViewModel(
     // TODO : wrap this in Repo pattern
     private val searchApi = retrofit.create(SearchApi::class.java)
 
-    private val _searchResultList = MutableLiveData<UiState<List<SearchResultItem>>>()
-    val searchResultList: LiveData<UiState<List<SearchResultItem>>> = _searchResultList
+    private val _searchResults = MutableLiveData<UiState<SearchResultsWrapper>>()
+    val searchResults: LiveData<UiState<SearchResultsWrapper>> = _searchResults
 
     private val _errorEvent = MutableLiveData<Throwable>()
     val errorEvent: LiveData<Throwable> = _errorEvent
 
     fun search(query: String) {
-        _searchResultList.postValue(UiState.Loading)
+        _searchResults.postValue(UiState.Loading)
         viewModelScope.launch(dispatcher) {
             try {
-                _searchResultList.postValue(UiState.Success(searchApi.search(query).results))
+                _searchResults.postValue(UiState.Success(
+                    SearchResultsWrapper(
+                        query,
+                        searchApi.search(query).results
+                    )
+                ))
             } catch (e: Exception) {
                 _errorEvent.postValue(e)
             }

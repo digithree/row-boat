@@ -3,6 +3,7 @@ package co.simonkenny.row.collection
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -19,6 +20,20 @@ class CollectionFragment : Fragment() {
             tvCollectionWelcomeTitle.typeface = Typeface.createFromAsset(context?.assets, "fonts/LibreBaskerville-Bold.ttf")
             tvCollectionWelcomeBody.typeface = Typeface.createFromAsset(context?.assets, "fonts/LibreBaskerville-Regular.ttf")
         }
+        setHasOptionsMenu(true)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().invalidateOptionsMenu()
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        with (menu) {
+            findItem(R.id.action_add_to_collection).isVisible = false
+            findItem(R.id.action_search).isVisible = false
+        }
     }
 }

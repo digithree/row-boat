@@ -1,11 +1,10 @@
 package co.simonkenny.row.search
 
-import android.content.Intent
 import android.graphics.Typeface
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -16,8 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +22,6 @@ import co.simonkenny.row.core.UiState
 import co.simonkenny.row.core.di.FakeDI
 import co.simonkenny.row.navigation.Navigate
 import co.simonkenny.row.search.databinding.FragSearchBinding
-import java.lang.IllegalArgumentException
 
 class SearchFragment : Fragment() {
 
@@ -64,9 +60,11 @@ class SearchFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.frag_search, container, false)
         with (binding) {
+            tvSearchTitle.typeface = Typeface.createFromAsset(context?.assets, "fonts/LibreBaskerville-Italic.ttf")
             tvSearchWelcomeTitle.typeface = Typeface.createFromAsset(context?.assets, "fonts/LibreBaskerville-Bold.ttf")
             tvSearchWelcomeBody.typeface = Typeface.createFromAsset(context?.assets, "fonts/LibreBaskerville-Regular.ttf")
         }
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -79,7 +77,7 @@ class SearchFragment : Fragment() {
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             }
         }
-        viewModel.searchResultList.observe(viewLifecycleOwner,
+        viewModel.searchResults.observe(viewLifecycleOwner,
             Observer { processObserved(it) })
         viewModel.errorEvent.observe(viewLifecycleOwner, Observer {
             binding.pbSearch.isGone = true
@@ -90,21 +88,38 @@ class SearchFragment : Fragment() {
         Log.d("SearchFragment", "query: $args.query")
         when {
             args.query.isNotBlank() -> {
+                binding.tvSearchTitle.run {
+                    isVisible = true
+                    text = args.query
+                }
                 viewModel.search(args.query)
                 showWelcomeState(false)
             }
-            viewModel.searchResultList.value != null ->
-                processObserved(requireNotNull(viewModel.searchResultList.value))
+            viewModel.searchResults.value != null ->
+                processObserved(requireNotNull(viewModel.searchResults.value))
             else -> showWelcomeState(true)
+        }
+        requireActivity().invalidateOptionsMenu()
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        with (menu) {
+            findItem(R.id.action_add_to_collection).isVisible = false
+            findItem(R.id.action_search).isVisible = true
         }
     }
 
-    private fun processObserved(observed: UiState<List<SearchResultItem>>) {
+    private fun processObserved(observed: UiState<SearchResultsWrapper>) {
         when (observed) {
             is UiState.Success -> {
+                binding.tvSearchTitle.run {
+                    isVisible = true
+                    text = observed.data.query
+                }
                 binding.pbSearch.isGone = true
                 showWelcomeState(false)
-                searchListAdapter.submitList(observed.data)
+                searchListAdapter.submitList(observed.data.results)
             }
             // moved error handling to separate LiveData, so get last working result here
             is UiState.Loading -> {
@@ -119,6 +134,7 @@ class SearchFragment : Fragment() {
             llSearchWelcome.isVisible = show
             rvSearch.isGone = show
             if (show) {
+                tvSearchTitle.isVisible = false
                 pbSearch.isVisible = false
             }
         }

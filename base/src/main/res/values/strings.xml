@@ -20,6 +20,7 @@
     <!-- collection -->
     <string name="collection_welcome_title">Collection</string>
     <string name="collection_welcome_body">Collection bookmark feature is not yet ready.\n\nComing in a further release.</string>
+    <string name="add_to_collection">Add to Collection</string>
 
     <!-- tags -->
     <string name="error_too_many_tags">Cannot select any more tags</string>

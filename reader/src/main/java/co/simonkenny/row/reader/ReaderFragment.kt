@@ -10,9 +10,7 @@ import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.text.style.StyleSpan
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -22,14 +20,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import co.simonkenny.row.base.CustomTypefaceSpan
 import co.simonkenny.row.core.UiState
 import co.simonkenny.row.core.article.Article
 import co.simonkenny.row.core.di.FakeDI
+import co.simonkenny.row.navigation.Navigate
 import co.simonkenny.row.reader.databinding.FragReaderBinding
-import java.lang.IllegalArgumentException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -72,6 +68,7 @@ class ReaderFragment : Fragment() {
             tvReaderPublisher.movementMethod = LinkMovementMethod.getInstance()
             tvReaderBody.movementMethod = LinkMovementMethod.getInstance()
         }
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -89,7 +86,24 @@ class ReaderFragment : Fragment() {
                 processObserved(requireNotNull(viewModel.article.value))
             else -> showWelcomeState(true)
         }
+        requireActivity().invalidateOptionsMenu()
     }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        with (menu) {
+            findItem(R.id.action_add_to_collection).isVisible =
+                args.url.isNotBlank() || viewModel.article.value != null
+            findItem(R.id.action_search).isVisible = true
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        if (item.itemId == R.id.action_add_to_collection
+                && args.url.isNotBlank()) {
+            Navigate.addToCollection(requireContext(), args.url)
+            true
+        } else super.onOptionsItemSelected(item)
 
     private fun processObserved(observed: UiState<Article>) {
         when (observed) {

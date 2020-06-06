@@ -1,20 +1,20 @@
 package co.simonkenny.row
 
 import android.app.SearchManager
-import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.widget.SearchView
-import androidx.core.util.PatternsCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.*
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.ui.setupActionBarWithNavController
 import co.simonkenny.row.base.Patterns
 import co.simonkenny.row.databinding.ActivityMainBinding
 import java.net.MalformedURLException
@@ -26,8 +26,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     private lateinit var appNavigation: AppNavigation
-
-    private lateinit var searchMenuItem: MenuItem
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +56,6 @@ class MainActivity : AppCompatActivity() {
                     R.id.article_action -> navController.navigate(NavigationXmlDirections.articleAction(""))
                     else -> navController.navigate(it.itemId)
                 }
-                searchMenuItem.collapseActionView()
                 true
             }
         }
@@ -87,17 +84,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_toolbar, menu)
-        searchMenuItem = requireNotNull(menu?.findItem(R.id.app_bar_search))
-        (searchMenuItem.actionView as SearchView).run {
-            setSearchableInfo((getSystemService(Context.SEARCH_SERVICE) as SearchManager)
-                .getSearchableInfo(componentName))
-        }
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val navController = findNavController(this, R.id.nav_host_fragment)
-        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+        return if (item.itemId == R.id.action_search) {
+            onSearchRequested()
+            true
+        } else {
+            (item.onNavDestinationSelected(findNavController(this, R.id.nav_host_fragment))
+                    || super.onOptionsItemSelected(item))
+        }
     }
 
     override fun onStart() {

@@ -3,11 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/app_bar_search"
+        android:id="@+id/action_add_to_collection"
+        android:icon="@drawable/ic_playlist_add"
+        android:title="@string/add_to_collection"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_search"
         android:icon="@drawable/ic_search"
         android:title="@string/search"
-        app:showAsAction="collapseActionView|ifRoom"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+        app:showAsAction="ifRoom" />
 
     <!--item
         android:id="@+id/settings_fragment"
