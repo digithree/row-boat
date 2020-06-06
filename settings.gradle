@@ -1,2 +1,3 @@
+include ':tags'
 include ':app', ':base', ':core', ':reader', ':search', ':settings', ':collection', ':navigation'
 rootProject.name='Row Boat'

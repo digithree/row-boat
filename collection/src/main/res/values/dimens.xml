@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="add_to_collection_above_tags_margin">26dp</dimen>
+</resources>
