@@ -31,7 +31,7 @@ import java.util.*
 
 class ReaderFragment : Fragment() {
 
-    private val retrofit = FakeDI.instance.retrofit
+    private val articleRepo = FakeDI.instance.articleRepo
 
     private val dataFormatter = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
 
@@ -43,7 +43,7 @@ class ReaderFragment : Fragment() {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
                 if (modelClass == ReaderViewModel::class.java) {
-                    return ReaderViewModel(retrofit) as T
+                    return ReaderViewModel(articleRepo) as T
                 }
                 throw IllegalArgumentException("Cannot create ViewMode of class ${modelClass.canonicalName}")
             }

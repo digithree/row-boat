@@ -1,9 +1,10 @@
-package co.simonkenny.row.core.article
+package co.simonkenny.row.core.article.db
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import co.simonkenny.row.core.article.DbArticle
 
 @Dao
 internal interface ArticleDatabaseDao {

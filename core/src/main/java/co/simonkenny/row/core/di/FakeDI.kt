@@ -17,6 +17,7 @@ class FakeDI private constructor() {
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
+
     val retrofit = Retrofit.Builder()
         .baseUrl(ROW_BASE_URL)
         .addConverterFactory(MoshiConverterFactory.create(moshi))

@@ -4,6 +4,8 @@ import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import co.simonkenny.row.core.article.*
+import co.simonkenny.row.core.article.db.ArticleDatabase
+import co.simonkenny.row.core.article.db.ArticleDatabaseDao
 import junit.framework.Assert.assertEquals
 import org.junit.After
 import org.junit.Before

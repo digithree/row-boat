@@ -5,8 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.simonkenny.row.core.UiState
-import co.simonkenny.row.core.article.Article
-import co.simonkenny.row.core.article.ArticleRepo
+import co.simonkenny.row.core.article.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,11 +22,13 @@ class AddToCollectionViewModel(
     fun add(url: String, title: String? = null, tagsList: List<String>? = null) {
         viewModelScope.launch(dispatcher) {
             try {
-                articleRepo.addArticle(Article(
-                    url,
-                    title = title,
-                    tags = tagsList?.joinToString { "," }
-                )).await()
+                articleRepo.addLocalArticle(
+                    articleRepo.getArticle(url, RepoFetchOptions(network = false, errorOnFail = false)).await()
+                        .apply {
+                            title?.run { replaceTitle(this) }
+                            tagsList?.run { replaceTags(joinToString { "," }) }
+                        }
+                ).await()
                 _addUiState.postValue(UiState.Success(Any()))
             } catch (e: Exception) {
                 _addUiState.postValue(UiState.Error(e))

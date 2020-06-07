@@ -2,6 +2,7 @@ package co.simonkenny.row.core.article
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import co.simonkenny.row.core.article.db.ArticleDatabase
 import java.util.*
 
 // Communicated to feature modules
@@ -31,6 +32,12 @@ internal data class DbArticle (
     val tags: String?,
     val permission: String?
 ): IArticle
+
+fun Article.replaceTags(tags: String?): Article =
+    Article(url, added, title, attribution, date, publisher, body, tags, permission)
+
+fun Article.replaceTitle(title: String?): Article =
+    Article(url, added, title, attribution, date, publisher, body, tags, permission)
 
 internal fun Article.toDbArticle(added: Long? = null): DbArticle =
     DbArticle(url, this.added ?: added ?: Date().time, title, attribution, date, publisher, body, tags, permission)

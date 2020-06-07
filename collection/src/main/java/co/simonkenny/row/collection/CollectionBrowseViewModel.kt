@@ -17,17 +17,17 @@ class CollectionBrowseViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ): ViewModel() {
 
-    private val _articlesList = MutableLiveData<UiState<List<Article>>>()
-    val articlesList: LiveData<UiState<List<Article>>> = _articlesList
+    private val _articleList = MutableLiveData<UiState<List<Article>>>()
+    val articleList: LiveData<UiState<List<Article>>> = _articleList
 
     fun fetchArticles(from: Article? = null) {
         viewModelScope.launch(dispatcher) {
             try {
-                _articlesList.postValue(UiState.Success(
-                    articleRepo.getArticleList(from).await()
+                _articleList.postValue(UiState.Success(
+                    articleRepo.getLocalArticleList(from).await()
                 ))
             } catch (e: Exception) {
-                _articlesList.postValue(UiState.Error(e))
+                _articleList.postValue(UiState.Error(e))
             }
         }
     }

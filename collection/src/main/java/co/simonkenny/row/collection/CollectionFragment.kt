@@ -54,7 +54,7 @@ class CollectionFragment : Fragment() {
         requireActivity().invalidateOptionsMenu()
 
         // TODO : remove, just for debug
-        viewModel.articlesList.observe(viewLifecycleOwner, Observer {
+        viewModel.articleList.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is UiState.Success -> Log.d("CollectionFragment", "Collection: ${it.data}")
                 is UiState.Error -> Toast.makeText(requireContext(), "Failed to fetch Collection", Toast.LENGTH_LONG).show()

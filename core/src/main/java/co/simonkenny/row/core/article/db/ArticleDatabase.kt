@@ -1,9 +1,10 @@
-package co.simonkenny.row.core.article
+package co.simonkenny.row.core.article.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import co.simonkenny.row.core.article.DbArticle
 
 @Database(entities = [DbArticle::class], version = 1, exportSchema = false)
 internal abstract class ArticleDatabase: RoomDatabase() {
@@ -19,12 +20,14 @@ internal abstract class ArticleDatabase: RoomDatabase() {
 
         fun getInstance(context: Context): ArticleDatabase {
             synchronized(this) {
-                var instance = INSTANCE
+                var instance =
+                    INSTANCE
                 if (instance == null) {
                     instance = Room.databaseBuilder(
                             context.applicationContext,
                             ArticleDatabase::class.java,
-                            DB)
+                        DB
+                    )
                         .fallbackToDestructiveMigration()
                         .build()
                     INSTANCE = instance
