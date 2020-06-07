@@ -15,7 +15,8 @@ data class Article (
     override val publisher: String? = null,
     override val body: String? = null,
     val tags: String? = null,
-    val permission: String? = null
+    val permission: String? = null,
+    val read: Boolean? = null
 ): IArticle
 
 // used for DB
@@ -30,17 +31,18 @@ internal data class DbArticle (
     override val publisher: String?,
     override val body: String?,
     val tags: String?,
-    val permission: String?
+    val permission: String?,
+    val read: Boolean?
 ): IArticle
 
 fun Article.replaceTags(tags: String?): Article =
-    Article(url, added, title, attribution, date, publisher, body, tags, permission)
+    Article(url, added, title, attribution, date, publisher, body, tags, permission, read)
 
 fun Article.replaceTitle(title: String?): Article =
-    Article(url, added, title, attribution, date, publisher, body, tags, permission)
+    Article(url, added, title, attribution, date, publisher, body, tags, permission, read)
 
 internal fun Article.toDbArticle(added: Long? = null): DbArticle =
-    DbArticle(url, this.added ?: added ?: Date().time, title, attribution, date, publisher, body, tags, permission)
+    DbArticle(url, this.added ?: added ?: Date().time, title, attribution, date, publisher, body, tags, permission, read)
 
 internal fun DbArticle.toArticle(): Article =
     Article(url, added, title, attribution, date, publisher, body, tags, permission)

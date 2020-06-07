@@ -123,7 +123,8 @@ class CollectionFragment : Fragment() {
             }
             is UiState.Error -> {
                 Toast.makeText(requireContext(), "Failed to fetch Collection", Toast.LENGTH_LONG).show()
-                showWelcomeState(false)
+                binding.pbCollectionBrowse.isGone = true
+                showWelcomeState(true)
             }
         }
     }
