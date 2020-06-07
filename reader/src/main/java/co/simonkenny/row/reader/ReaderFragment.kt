@@ -1,6 +1,8 @@
 package co.simonkenny.row.reader
 
+import android.content.Intent
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -9,6 +11,7 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.text.style.StyleSpan
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.*
 import android.widget.Toast
@@ -64,7 +67,6 @@ class ReaderFragment : Fragment() {
             tvReaderWelcomeTitle.typeface = typefaceBold
             tvReaderWelcomeBody.typeface = typefaceRegular
             // enable auto-html links
-            tvReaderUrl.movementMethod = LinkMovementMethod.getInstance()
             tvReaderPublisher.movementMethod = LinkMovementMethod.getInstance()
             tvReaderBody.movementMethod = LinkMovementMethod.getInstance()
         }
@@ -140,7 +142,12 @@ class ReaderFragment : Fragment() {
         with (binding) {
             with (article) {
                 tvReaderTitle.text = title ?: "NO TITLE"
-                tvReaderUrl.text = url
+                tvReaderUrl.text = SpannableStringBuilder(url).apply {
+                    setSpan(UnderlineSpan(), 0, length, 0)
+                }
+                tvReaderUrl.setOnClickListener {
+                    startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
+                }
                 val dateFormatted: String? = date?.run {
                     dataFormatter.format(Date(this))
                 }

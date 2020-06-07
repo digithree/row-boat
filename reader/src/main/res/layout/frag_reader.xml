@@ -31,7 +31,9 @@
                     android:ellipsize="end"
                     android:textSize="@dimen/article_info_size"
                     android:textColor="@android:color/secondary_text_light"
-                    android:textIsSelectable="true"/>
+                    android:clickable="true"
+                    android:focusable="true"
+                    />
 
                 <TextView
                     android:id="@+id/tv_reader_attribution"
@@ -40,7 +42,7 @@
                     android:layout_marginTop="@dimen/article_info_vert_margin"
                     android:ellipsize="end"
                     android:textSize="@dimen/article_info_size"
-                    android:textColor="@android:color/secondary_text_light"
+                    android:textColor="@android:color/tertiary_text_light"
                     android:textIsSelectable="true"/>
 
                 <TextView
@@ -50,7 +52,7 @@
                     android:layout_marginTop="@dimen/article_info_vert_margin"
                     android:ellipsize="end"
                     android:textSize="@dimen/article_info_size"
-                    android:textColor="@android:color/secondary_text_light"
+                    android:textColor="@android:color/tertiary_text_light"
                     android:textIsSelectable="true"/>
 
                 <TextView

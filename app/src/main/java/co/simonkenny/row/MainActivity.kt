@@ -65,9 +65,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // handle incoming search or URL, if any
-        if (!handleSearchIntent(intent) && !handleUrlIntent(intent)) {
-            navController.navigate(NavigationXmlDirections.searchAction(""))
-        }
+        handleSearchIntent(intent)
+        handleUrlIntent(intent)
     }
 
     override fun onNewIntent(intent: Intent?) {
