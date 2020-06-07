@@ -8,6 +8,7 @@ const val DESTINATION_SEARCH = "destination_search"
 const val DIALOG_ADD_TO_COLLECTION = "dialog_add_to_collection"
 
 const val ARG_URL = "arg_url"
+const val ARG_TITLE = "arg_title"
 const val ARG_QUERY = "arg_query"
 
 class Navigate {
@@ -23,9 +24,11 @@ class Navigate {
                 .putExtra(ARG_QUERY, query))
         }
 
-        fun addToCollection(context: Context, url: String) {
+        fun addToCollection(context: Context, url: String, title: String? = null) {
             context.sendBroadcast(internalIntent(context, DIALOG_ADD_TO_COLLECTION)
-                .putExtra(ARG_URL, url))
+                .putExtra(ARG_URL, url).apply {
+                    title?.run { putExtra(ARG_TITLE, this) }
+                })
         }
 
         private fun internalIntent(context: Context, action: String) =

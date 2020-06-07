@@ -24,9 +24,10 @@ class AddToCollectionViewModel(
             try {
                 articleRepo.addLocalArticle(
                     articleRepo.getArticle(url, RepoFetchOptions(network = false, errorOnFail = false)).await()
-                        .apply {
-                            title?.run { replaceTitle(this) }
-                            tagsList?.run { replaceTags(joinToString { "," }) }
+                        .run {
+                            title?.run { replaceTitle(this) } ?: this
+                        }.run {
+                            tagsList?.run { replaceTags(joinToString(",")) } ?: this
                         }
                 ).await()
                 _addUiState.postValue(UiState.Success(Any()))

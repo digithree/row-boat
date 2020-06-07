@@ -1,4 +1,4 @@
-package co.simonkenny.row.collection
+package co.simonkenny.row.collection.browse
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -50,8 +50,8 @@ class SearchFragment : Fragment() {
                 Navigate.toReader(requireContext(), url)
             }
 
-            override fun onLongTap(url: String): Boolean {
-                Navigate.addToCollection(requireContext(), url)
+            override fun onLongTap(url: String, title: String?): Boolean {
+                Navigate.addToCollection(requireContext(), url, title)
                 return true
             }
         }

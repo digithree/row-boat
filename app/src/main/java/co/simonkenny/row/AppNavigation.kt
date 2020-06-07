@@ -23,12 +23,13 @@ class AppNavigation(
                 DESTINATION_SEARCH -> navController.navigate(NavigationXmlDirections
                     .searchAction(intent.getStringExtra(ARG_QUERY) ?: ""))
                 DIALOG_ADD_TO_COLLECTION -> fragmentManager?.run {
-                    with (requireNotNull(intent.getStringExtra(ARG_URL))) {
-                        AddToCollectionBottomSheetDialogFragment
-                            .newInstance(this)
-                            .show(this@run,
-                                AddToCollectionBottomSheetDialogFragment::class.java.name)
-                    }
+                    AddToCollectionBottomSheetDialogFragment
+                        .newInstance(
+                            requireNotNull(intent.getStringExtra(ARG_URL)),
+                            intent.getStringExtra(ARG_TITLE)
+                        )
+                        .show(this@run,
+                            AddToCollectionBottomSheetDialogFragment::class.java.name)
                 }
             }
         }

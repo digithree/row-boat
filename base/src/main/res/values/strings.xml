@@ -19,8 +19,14 @@
 
     <!-- collection -->
     <string name="collection_welcome_title">Collection</string>
-    <string name="collection_welcome_body">Collection bookmark feature is not yet ready.\n\nComing in a further release.</string>
+    <string name="collection_welcome_body">Collection of locally saved articles.\n\nTo add to Collection, long tap on an article in Search, or use add to list button in Reader.</string>
+
     <string name="add_to_collection">Add to Collection</string>
+
+    <string name="browse_collection_item_permission_local">local</string>
+    <string name="browse_collection_item_load_state_all_data">all data</string>
+    <string name="browse_collection_item_load_state_just_metadata">just metadata</string>
+    <string name="browse_collection_item_no_title">NO TITLE</string>
 
     <!-- tags -->
     <string name="error_too_many_tags">Cannot select any more tags</string>

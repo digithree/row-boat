@@ -19,7 +19,7 @@ internal class SearchListAdapter(
 ) {
     interface Callback {
         fun onTap(url: String)
-        fun onLongTap(url: String): Boolean
+        fun onLongTap(url: String, title: String?): Boolean
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -32,7 +32,7 @@ internal class SearchListAdapter(
                 setTitle(title)
                 setSubtitle(url)
                 setClickHandler { callback.onTap(url) }
-                setLongClickHandler { callback.onLongTap(url) }
+                setLongClickHandler { callback.onLongTap(url, title) }
             }
         }
     }

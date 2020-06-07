@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import co.simonkenny.row.core.UiState
 import co.simonkenny.row.core.article.Article
 import co.simonkenny.row.core.article.ArticleRepo
+import co.simonkenny.row.core.article.RepoFetchOptions
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,7 +26,10 @@ class ReaderViewModel(
         _article.postValue(UiState.Loading)
         viewModelScope.launch(dispatcher) {
             try {
-                _article.postValue(UiState.Success(articleRepo.getArticle(url).await()))
+                _article.postValue(UiState.Success(
+                    articleRepo.getArticle(url).await().takeIf { it.body != null }
+                        ?: articleRepo.getArticle(url, RepoFetchOptions(db = false, mem = false)).await()
+                ))
             } catch (e: Exception) {
                 _article.postValue(UiState.Error(e))
             }

@@ -22,15 +22,17 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 
-private const val ARG_URL = "arg_url";
+private const val ARG_URL = "arg_url"
+private const val ARG_TITLE = "arg_title"
 
 class AddToCollectionBottomSheetDialogFragment: BottomSheetDialogFragment() {
 
     companion object {
-        fun newInstance(url: String) =
+        fun newInstance(url: String, title: String?) =
             AddToCollectionBottomSheetDialogFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_URL, url)
+                    title?.run { putString(ARG_TITLE, this) }
                 }
             }
         }
@@ -64,13 +66,14 @@ class AddToCollectionBottomSheetDialogFragment: BottomSheetDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.frag_bottom_sheet_add_to_collection, container, false)
         url = requireNotNull(requireArguments().getString(ARG_URL))
+        val title = requireArguments().getString(ARG_TITLE)
         with (binding) {
             tvAddToCollectionTitle.text = SpannableStringBuilder(url).apply {
                 setSpan(UnderlineSpan(), 0, length, 0)
             }
             btnAddToCollectionCancel.setOnClickListener { dismiss() }
             btnAddToCollectionAdd.setOnClickListener {
-                viewModel.add(url, tagsList = selectedTagsList)
+                viewModel.add(url, title = title, tagsList = selectedTagsList)
             }
             TagsStore.instance.getAllTags()
                 .forEach {

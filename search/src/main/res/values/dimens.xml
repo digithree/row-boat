@@ -2,9 +2,4 @@
 <resources>
     <dimen name="search_header_padding">12dp</dimen>
     <dimen name="search_header_title">18sp</dimen>
-
-    <dimen name="search_result_item_padding">12dp</dimen>
-    <dimen name="search_result_item_line_padding">6dp</dimen>
-    <dimen name="search_result_item_title_size">18sp</dimen>
-    <dimen name="search_result_item_subtitle_size">14sp</dimen>
 </resources>
