@@ -10,6 +10,7 @@ apply from: "$rootDir/common-lib.gradle"
 dependencies {
     implementation project(':base')
     implementation project(':tags')
+    implementation project(':core')
 
     implementation "com.android.support:design:$support_design_version"
 }

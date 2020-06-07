@@ -10,7 +10,12 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import co.simonkenny.row.collection.databinding.FragBottomSheetAddToCollectionBinding
+import co.simonkenny.row.core.UiState
+import co.simonkenny.row.core.di.FakeDI
 import co.simonkenny.row.tags.TagsStore
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -30,7 +35,27 @@ class AddToCollectionBottomSheetDialogFragment: BottomSheetDialogFragment() {
             }
         }
 
+    private val articleRepo by lazy {
+        FakeDI.instance.articleRepo.apply {
+            init(requireActivity().application)
+        }
+    }
+
+    private val viewModel: AddToCollectionViewModel by lazy {
+        ViewModelProvider(viewModelStore, object: ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                if (modelClass == AddToCollectionViewModel::class.java) {
+                    return AddToCollectionViewModel(articleRepo) as T
+                }
+                throw IllegalArgumentException("Cannot create ViewMode of class ${modelClass.canonicalName}")
+            }
+        }).get(AddToCollectionViewModel::class.java)
+    }
+
     private lateinit var binding: FragBottomSheetAddToCollectionBinding
+
+    private lateinit var url: String
 
     private val selectedTagsList = mutableListOf<String>()
     private var chipSelectHandlerFreeze = false
@@ -38,12 +63,15 @@ class AddToCollectionBottomSheetDialogFragment: BottomSheetDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.frag_bottom_sheet_add_to_collection, container, false)
+        url = requireNotNull(requireArguments().getString(ARG_URL))
         with (binding) {
-            tvAddToCollectionTitle.text = SpannableStringBuilder(requireNotNull(requireArguments().getString(ARG_URL))).apply {
+            tvAddToCollectionTitle.text = SpannableStringBuilder(url).apply {
                 setSpan(UnderlineSpan(), 0, length, 0)
             }
             btnAddToCollectionCancel.setOnClickListener { dismiss() }
-            btnAddToCollectionAdd.setOnClickListener { doSubmit() }
+            btnAddToCollectionAdd.setOnClickListener {
+                viewModel.add(url, tagsList = selectedTagsList)
+            }
             TagsStore.instance.getAllTags()
                 .forEach {
                     (layoutInflater.inflate(R.layout.chip_selectable, cgAddToCollectionTags, false) as Chip).apply {
@@ -53,6 +81,16 @@ class AddToCollectionBottomSheetDialogFragment: BottomSheetDialogFragment() {
                     }
                 }
         }
+        viewModel.addUiState.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                //is UiState.Loading ->
+                is UiState.Success -> {
+                    Toast.makeText(requireContext(), "Added to Collection", Toast.LENGTH_SHORT).show()
+                    dismiss()
+                }
+                is UiState.Error -> Toast.makeText(requireContext(), "Failed to add to Collection", Toast.LENGTH_SHORT).show()
+            }
+        })
         return binding.root
     }
 
@@ -86,10 +124,5 @@ class AddToCollectionBottomSheetDialogFragment: BottomSheetDialogFragment() {
         } else {
             selectedTagsList.remove(chip.text.toString())
         }
-    }
-
-    private fun doSubmit() {
-        Toast.makeText(context, "Would submit URL with tags: $selectedTagsList", Toast.LENGTH_LONG).show()
-        dismiss()
     }
 }

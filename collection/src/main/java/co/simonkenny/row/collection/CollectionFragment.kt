@@ -2,15 +2,40 @@ package co.simonkenny.row.collection
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import co.simonkenny.row.collection.databinding.FragCollectionBinding
+import co.simonkenny.row.core.UiState
+import co.simonkenny.row.core.di.FakeDI
 
 class CollectionFragment : Fragment() {
+
+    private val articleRepo by lazy {
+        FakeDI.instance.articleRepo.apply {
+            init(requireActivity().application)
+        }
+    }
+
+    private val viewModel: CollectionBrowseViewModel by lazy {
+        ViewModelProvider(viewModelStore, object: ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                if (modelClass == CollectionBrowseViewModel::class.java) {
+                    return CollectionBrowseViewModel(articleRepo) as T
+                }
+                throw IllegalArgumentException("Cannot create ViewMode of class ${modelClass.canonicalName}")
+            }
+        }).get(CollectionBrowseViewModel::class.java)
+    }
 
     private lateinit var binding: FragCollectionBinding
 
@@ -27,6 +52,15 @@ class CollectionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().invalidateOptionsMenu()
+
+        // TODO : remove, just for debug
+        viewModel.articlesList.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is UiState.Success -> Log.d("CollectionFragment", "Collection: ${it.data}")
+                is UiState.Error -> Toast.makeText(requireContext(), "Failed to fetch Collection", Toast.LENGTH_LONG).show()
+            }
+        })
+        viewModel.fetchArticles()
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
