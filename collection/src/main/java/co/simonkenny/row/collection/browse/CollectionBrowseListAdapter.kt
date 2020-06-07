@@ -40,7 +40,7 @@ internal class CollectionBrowseListAdapter(
                 setTitle(title ?: context.getString(R.string.browse_collection_item_no_title))
                 setSubtitle(url)
                 setTags(
-                    tags?.split(",") ?: emptyList()
+                    tags?.takeIf { it.isNotBlank() }?.split(",") ?: emptyList()
                 )
                 setClickHandler { callback.onTap(url) }
                 setLongClickHandler { callback.onLongTap(url) }

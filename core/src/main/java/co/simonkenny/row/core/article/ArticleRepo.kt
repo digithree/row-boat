@@ -74,7 +74,6 @@ class ArticleRepo {
 
     fun addLocalArticle(article: Article): Completable {
         dbCheck()
-
         return Observable.fromCallable {
             articleDatabase?.articleDatabaseDao?.insert(article.toDbArticle(Date().time))
                 ?: error { "Could not add Article" }
@@ -83,12 +82,21 @@ class ArticleRepo {
 
     fun getLocalArticleList(from: Article? = null): Single<List<Article>> {
         dbCheck()
-
         // TODO : use from value and page
         return Single.fromCallable {
             articleDatabase?.articleDatabaseDao?.getAll()
                 ?.map { it.toArticle() }
                 ?: error { "Could not get Articles" }
+        }
+    }
+
+    fun deleteLocalArticle(url: String): Single<Article> {
+        dbCheck()
+        return Single.fromCallable {
+            articleDatabase?.articleDatabaseDao?.get(url)?.run {
+                articleDatabase?.articleDatabaseDao?.delete(this)
+                toArticle()
+            } ?: error { "Could not add Article" }
         }
     }
 

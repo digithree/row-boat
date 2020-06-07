@@ -28,10 +28,13 @@
     <string name="browse_collection_item_load_state_just_metadata">just metadata</string>
     <string name="browse_collection_item_no_title">NO TITLE</string>
 
+    <string name="browse_collection_item_delete_message">Are you sure you want to delete this article?</string>
+
     <!-- tags -->
     <string name="error_too_many_tags">Cannot select any more tags</string>
 
     <!-- base, general -->
     <string name="cancel">Cancel</string>
     <string name="add">Add</string>
+    <string name="delete">Delete</string>
 </resources>

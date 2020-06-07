@@ -13,7 +13,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/welcome_margin">
+            android:layout_margin="@dimen/welcome_margin"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/tv_collection_welcome_title"
@@ -44,7 +45,6 @@
             android:id="@+id/pb_collection_browse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone" />
+            android:layout_gravity="center" />
     </FrameLayout>
 </layout>

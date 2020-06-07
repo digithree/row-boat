@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.simonkenny.row.base.SingleLiveEvent
 import co.simonkenny.row.core.UiState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +22,7 @@ internal class SearchViewModel(
     private val _searchResults = MutableLiveData<UiState<SearchResultsWrapper>>()
     val searchResults: LiveData<UiState<SearchResultsWrapper>> = _searchResults
 
-    private val _errorEvent = MutableLiveData<Throwable>()
+    private val _errorEvent = SingleLiveEvent<Throwable>()
     val errorEvent: LiveData<Throwable> = _errorEvent
 
     fun search(query: String) {

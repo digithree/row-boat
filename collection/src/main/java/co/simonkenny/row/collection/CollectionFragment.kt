@@ -1,5 +1,6 @@
 package co.simonkenny.row.collection
 
+import android.content.DialogInterface
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -24,6 +26,7 @@ import co.simonkenny.row.core.UiState
 import co.simonkenny.row.core.article.Article
 import co.simonkenny.row.core.di.FakeDI
 import co.simonkenny.row.navigation.Navigate
+
 
 class CollectionFragment : Fragment() {
 
@@ -56,8 +59,8 @@ class CollectionFragment : Fragment() {
             }
 
             override fun onLongTap(url: String): Boolean {
-                // TODO : delete item, with confirmation
-                return false
+                deleteArticleWithConfirm(url)
+                return true
             }
         }
     )
@@ -83,6 +86,15 @@ class CollectionFragment : Fragment() {
         }
         viewModel.articleList.observe(viewLifecycleOwner, Observer {
             processObserved(it)
+        })
+        viewModel.deleteArticleEvent.observe(viewLifecycleOwner, Observer {
+            if (it.first != null) {
+                Toast.makeText(requireContext(), "Article delete from local Collection", Toast.LENGTH_LONG).show()
+                viewModel.fetchArticles()
+            } else if (it.second != null) {
+                requireNotNull(it.second).printStackTrace()
+                Toast.makeText(requireContext(), "Failed to delete article", Toast.LENGTH_LONG).show()
+            }
         })
         viewModel.fetchArticles()
         requireActivity().invalidateOptionsMenu()
@@ -124,5 +136,21 @@ class CollectionFragment : Fragment() {
                 pbCollectionBrowse.isVisible = false
             }
         }
+    }
+
+    private fun deleteArticleWithConfirm(url: String) {
+        val dialogClickListener =
+            DialogInterface.OnClickListener { _, which ->
+                when (which) {
+                    DialogInterface.BUTTON_POSITIVE -> viewModel.deleteArticle(url)
+                    DialogInterface.BUTTON_NEGATIVE -> Log.d("CollectionFragment", "deletion cancelled")
+                }
+            }
+
+        AlertDialog.Builder(requireContext())
+            .setMessage(getString(R.string.browse_collection_item_delete_message))
+            .setPositiveButton(getString(R.string.delete), dialogClickListener)
+            .setNegativeButton(getString(R.string.cancel), dialogClickListener)
+            .show()
     }
 }

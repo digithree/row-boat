@@ -1,9 +1,6 @@
 package co.simonkenny.row.core.article.db
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import co.simonkenny.row.core.article.DbArticle
 
 @Dao
@@ -14,6 +11,9 @@ internal interface ArticleDatabaseDao {
 
     @Update
     fun update(dbArticle: DbArticle)
+
+    @Delete
+    fun delete(dbArticle: DbArticle)
 
     @Query("SELECT * from " + ArticleDatabase.TABLE_ARTICLE + " WHERE url = :key")
     fun get(key: String): DbArticle?
