@@ -8,6 +8,8 @@ apply from: "$rootDir/common-lib.gradle"
 
 
 dependencies {
+    implementation project(':coresettings')
+
     // room
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"

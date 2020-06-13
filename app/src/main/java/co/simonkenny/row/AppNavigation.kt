@@ -12,11 +12,12 @@ import co.simonkenny.row.collection.AddToCollectionBottomSheetDialogFragment
 import co.simonkenny.row.core.article.ArticleRepo
 import co.simonkenny.row.navigation.*
 import co.simonkenny.row.pdf.PdfExportHandler
+import co.simonkenny.row.util.RegisterableWithActivity
 
 class AppNavigation(
     private val articleRepo: ArticleRepo,
     private val navController: NavController
-) {
+): RegisterableWithActivity() {
 
     private val broadcastReceiver = object: BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -46,17 +47,16 @@ class AppNavigation(
 
     private var fragmentManager: FragmentManager? = null
 
-    private var isRegistered = false
-
-    fun registerReceiver(activity: AppCompatActivity) {
+    override fun register(activity: AppCompatActivity) {
+        super.register(activity)
         activity.registerReceiver(broadcastReceiver, IntentFilter().apply {
             NAVIGATION_ENDPOINTS.forEach { addAction(it) }
         })
         fragmentManager = activity.supportFragmentManager
-        isRegistered = true
     }
 
-    fun unregisterReceiver(activity: AppCompatActivity) {
+    override fun unregister(activity: AppCompatActivity) {
+        super.unregister(activity)
         if (isRegistered) {
             try {
                 activity.unregisterReceiver(broadcastReceiver)

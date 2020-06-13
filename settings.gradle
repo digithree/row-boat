@@ -1,3 +1,4 @@
+include ':coresettings'
 include ':util'
 include ':readersupport'
 include ':pdf'

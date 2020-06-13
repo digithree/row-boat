@@ -1,20 +1,27 @@
 package co.simonkenny.row.settings
 
-import android.content.Context
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import co.simonkenny.row.core.di.FakeDI
+import co.simonkenny.row.coresettings.PdfSettingsData
+import co.simonkenny.row.coresettings.SizeData
+import co.simonkenny.row.coresettings.sizeDataFromOrdinal
 import co.simonkenny.row.settings.databinding.FragSettingsBinding
+import co.simonkenny.row.util.UiState
 
 class SettingsFragment : Fragment() {
+
+    private val settingsRepo = FakeDI.instance.settingsRepo
 
     private lateinit var binding: FragSettingsBinding
 
@@ -25,7 +32,7 @@ class SettingsFragment : Fragment() {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
                 if (modelClass == SettingsViewModel::class.java) {
-                    return SettingsViewModel(requireActivity().getPreferences(Context.MODE_PRIVATE)) as T
+                    return SettingsViewModel(settingsRepo) as T
                 }
                 throw IllegalArgumentException("Cannot create ViewMode of class ${modelClass.canonicalName}")
             }
@@ -41,19 +48,35 @@ class SettingsFragment : Fragment() {
         with (binding) {
             sbSettingsPdfTextSize.setOnSeekBarChangeListener(
                 SettingsOnSeekBarChangeListener { progress ->
-                    if (!uiUpdateFreeze) viewModel.updatePdfSettings(PdfSettingsData(textSize = progress.sizeDataFromOrdinal())) }
+                    if (!uiUpdateFreeze) viewModel.updatePdfSettings(
+                        PdfSettingsData(
+                            textSize = progress.sizeDataFromOrdinal()
+                        )
+                    ) }
             )
             sbSettingsPdfLineSpSize.setOnSeekBarChangeListener(
                 SettingsOnSeekBarChangeListener { progress ->
-                    if (!uiUpdateFreeze) viewModel.updatePdfSettings(PdfSettingsData(lineSpacingSize = progress.sizeDataFromOrdinal())) }
+                    if (!uiUpdateFreeze) viewModel.updatePdfSettings(
+                        PdfSettingsData(
+                            lineSpacingSize = progress.sizeDataFromOrdinal()
+                        )
+                    ) }
             )
             sbSettingsPdfMarginVertSize.setOnSeekBarChangeListener(
                 SettingsOnSeekBarChangeListener { progress ->
-                    if (!uiUpdateFreeze) viewModel.updatePdfSettings(PdfSettingsData(marginVertSize = progress.sizeDataFromOrdinal())) }
+                    if (!uiUpdateFreeze) viewModel.updatePdfSettings(
+                        PdfSettingsData(
+                            marginVertSize = progress.sizeDataFromOrdinal()
+                        )
+                    ) }
             )
             sbSettingsPdfMarginHorzSize.setOnSeekBarChangeListener(
                 SettingsOnSeekBarChangeListener { progress ->
-                    if (!uiUpdateFreeze) viewModel.updatePdfSettings(PdfSettingsData(marginHorzSize = progress.sizeDataFromOrdinal())) }
+                    if (!uiUpdateFreeze) viewModel.updatePdfSettings(
+                        PdfSettingsData(
+                            marginHorzSize = progress.sizeDataFromOrdinal()
+                        )
+                    ) }
             )
         }
         return binding.root
@@ -63,36 +86,57 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.pdfSettingsData.observe(viewLifecycleOwner,
             Observer {
-                with (it) {
-                    with (binding) {
-                        checkNotNull(textSize)
-                        checkNotNull(lineSpacingSize)
-                        checkNotNull(marginVertSize)
-                        checkNotNull(marginHorzSize)
-
-                        uiUpdateFreeze = true
-
-                        sbSettingsPdfTextSize.progress = textSize.ordinal
-                        tvSettingsPdfTextSizeValue.text = textSize.text(resources)
-                        tvSettingsPdfTextSizeValue.gravity = textGravity(textSize)
-
-                        sbSettingsPdfLineSpSize.progress = lineSpacingSize.ordinal
-                        tvSettingsPdfLineSpSizeValue.text = lineSpacingSize.text(resources)
-                        tvSettingsPdfLineSpSizeValue.gravity = textGravity(lineSpacingSize)
-
-                        sbSettingsPdfMarginVertSize.progress = marginVertSize.ordinal
-                        tvSettingsPdfMarginVertSizeValue.text = marginVertSize.text(resources)
-                        tvSettingsPdfMarginVertSizeValue.gravity = textGravity(marginVertSize)
-
-                        sbSettingsPdfMarginHorzSize.progress = marginHorzSize.ordinal
-                        tvSettingsPdfMarginHorzSizeValue.text = marginHorzSize.text(resources)
-                        tvSettingsPdfMarginHorzSizeValue.gravity = textGravity(marginHorzSize)
-
-                        uiUpdateFreeze = false
+                when (it) {
+                    is UiState.Success -> updateUi(it.data)
+                    is UiState.Error -> {
+                        it.exception.printStackTrace()
+                        Toast.makeText(requireContext(), "Couldn't access settings", Toast.LENGTH_LONG).show()
                     }
                 }
             })
         viewModel.init()
+    }
+
+    private fun updateUi(pdfSettingsData: PdfSettingsData) {
+        with (pdfSettingsData) {
+            with(binding) {
+                checkNotNull(textSize)
+                checkNotNull(lineSpacingSize)
+                checkNotNull(marginVertSize)
+                checkNotNull(marginHorzSize)
+
+                uiUpdateFreeze = true
+
+                sbSettingsPdfTextSize.progress =
+                    textSize?.ordinal ?: SizeData.SIZE_MEDIUM.ordinal
+                tvSettingsPdfTextSizeValue.text = textSize?.text(resources)
+                tvSettingsPdfTextSizeValue.gravity =
+                    textGravity(textSize ?: SizeData.SIZE_MEDIUM)
+
+                sbSettingsPdfLineSpSize.progress = lineSpacingSize?.ordinal
+                    ?: SizeData.SIZE_MEDIUM.ordinal
+                tvSettingsPdfLineSpSizeValue.text = lineSpacingSize?.text(resources)
+                tvSettingsPdfLineSpSizeValue.gravity = textGravity(
+                    lineSpacingSize ?: SizeData.SIZE_MEDIUM
+                )
+
+                sbSettingsPdfMarginVertSize.progress = marginVertSize?.ordinal
+                    ?: SizeData.SIZE_MEDIUM.ordinal
+                tvSettingsPdfMarginVertSizeValue.text = marginVertSize?.text(resources)
+                tvSettingsPdfMarginVertSizeValue.gravity = textGravity(
+                    marginVertSize ?: SizeData.SIZE_MEDIUM
+                )
+
+                sbSettingsPdfMarginHorzSize.progress = marginHorzSize?.ordinal
+                    ?: SizeData.SIZE_MEDIUM.ordinal
+                tvSettingsPdfMarginHorzSizeValue.text = marginHorzSize?.text(resources)
+                tvSettingsPdfMarginHorzSizeValue.gravity = textGravity(
+                    marginHorzSize ?: SizeData.SIZE_MEDIUM
+                )
+
+                uiUpdateFreeze = false
+            }
+        }
     }
 
     private fun textGravity(sizeData: SizeData) =

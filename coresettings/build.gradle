@@ -8,8 +8,5 @@ apply from: "$rootDir/common-lib.gradle"
 
 
 dependencies {
-    implementation project(':coresettings')
-    implementation project(':base')
-    implementation project(':core')
     implementation project(':util')
 }

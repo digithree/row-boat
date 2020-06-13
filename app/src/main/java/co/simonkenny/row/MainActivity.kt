@@ -93,12 +93,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        appNavigation.registerReceiver(this)
+        appNavigation.register(this)
+        FakeDI.instance.settingsRepo.register(this)
     }
 
     override fun onStop() {
         super.onStop()
-        appNavigation.unregisterReceiver(this)
+        appNavigation.unregister(this)
+        FakeDI.instance.settingsRepo.unregister(this)
     }
 
     // private helpers

@@ -59,6 +59,8 @@ dependencies {
     implementation project(':navigation')
     implementation project(':base')
     implementation project(':core')
+    implementation project(':util')
+    implementation project(':coresettings')
 
     // core
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

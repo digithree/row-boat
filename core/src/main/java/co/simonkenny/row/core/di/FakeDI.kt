@@ -2,6 +2,7 @@ package co.simonkenny.row.core.di
 
 import co.simonkenny.row.core.ROW_BASE_URL
 import co.simonkenny.row.core.article.ArticleRepo
+import co.simonkenny.row.coresettings.SettingsRepo
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -23,5 +24,7 @@ class FakeDI private constructor() {
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 
-    val articleRepo =  ArticleRepo()
+    val articleRepo = ArticleRepo()
+
+    val settingsRepo = SettingsRepo()
 }
