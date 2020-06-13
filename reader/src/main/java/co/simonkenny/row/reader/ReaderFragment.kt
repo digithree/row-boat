@@ -21,7 +21,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import co.simonkenny.row.base.CustomTypefaceSpan
-import co.simonkenny.row.core.UiState
+import co.simonkenny.row.util.UiState
 import co.simonkenny.row.core.di.FakeDI
 import co.simonkenny.row.navigation.Navigate
 import co.simonkenny.row.reader.databinding.FragReaderBinding

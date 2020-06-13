@@ -12,6 +12,7 @@ dependencies {
     implementation project(':tags')
     implementation project(':navigation')
     implementation project(':core')
+    implementation project(':util')
 
     implementation "com.android.support:design:$support_design_version"
 }

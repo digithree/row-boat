@@ -5,11 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.simonkenny.row.core.UiState
 import co.simonkenny.row.core.article.ArticleRepo
 import co.simonkenny.row.core.article.RepoFetchOptions
 import co.simonkenny.row.readersupport.ReaderDoc
 import co.simonkenny.row.readersupport.toReaderDoc
+import co.simonkenny.row.util.UiState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

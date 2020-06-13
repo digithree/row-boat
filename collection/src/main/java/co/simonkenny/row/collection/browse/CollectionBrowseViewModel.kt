@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.simonkenny.row.base.SingleLiveEvent
-import co.simonkenny.row.core.UiState
+import co.simonkenny.row.util.UiState
 import co.simonkenny.row.core.article.Article
 import co.simonkenny.row.core.article.ArticleRepo
 import kotlinx.coroutines.CoroutineDispatcher

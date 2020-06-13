@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
@@ -40,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         appNavigation = AppNavigation(articleRepo, navController)
 
         appBarConfiguration = AppBarConfiguration(setOf(
+            R.id.settings_fragment,
             R.id.collection_fragment,
             R.id.search_fragment,
             R.id.reader_fragment
@@ -48,23 +48,15 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         binding.bottomNav.apply {
-            // can't use this as setOnNavigationItemSelectedListener needed below replaces it
-            //setupWithNavController(navController)
-
-            // it doesn't look like there's a way to get this for free, have to call searchAction
-            // manually
             setOnNavigationItemSelectedListener {
                 when (it.itemId) {
                     R.id.search_action -> navController.navigate(NavigationXmlDirections.searchAction(""))
                     R.id.article_action -> navController.navigate(NavigationXmlDirections.articleAction(""))
+                    R.id.settings_action -> navController.navigate(R.id.settings_navigation)
                     else -> navController.navigate(it.itemId)
                 }
                 true
             }
-        }
-
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.bottomNav.isVisible = destination.id != R.id.settings_fragment
         }
 
         // handle incoming search or URL, if any

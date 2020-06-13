@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="settings_main_padding">16dp</dimen>
+
+    <dimen name="settings_item_margin_v">24dp</dimen>
+    <dimen name="settings_item_margin_inner_v">10dp</dimen>
+
+    <dimen name="settings_title">18sp</dimen>
+    <dimen name="settings_item">16sp</dimen>
+    <dimen name="settings_value">13sp</dimen>
+</resources>

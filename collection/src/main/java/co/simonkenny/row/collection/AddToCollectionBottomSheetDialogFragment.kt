@@ -14,7 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import co.simonkenny.row.collection.databinding.FragBottomSheetAddToCollectionBinding
-import co.simonkenny.row.core.UiState
+import co.simonkenny.row.util.UiState
 import co.simonkenny.row.core.di.FakeDI
 import co.simonkenny.row.tags.TagsStore
 import com.google.android.material.bottomsheet.BottomSheetBehavior

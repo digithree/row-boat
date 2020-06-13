@@ -1,4 +1,4 @@
-package co.simonkenny.row.core
+package co.simonkenny.row.util
 
 sealed class UiState<out T> {
     object None: UiState<Nothing>()

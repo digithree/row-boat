@@ -10,6 +10,7 @@ apply from: "$rootDir/common-lib.gradle"
 dependencies {
     implementation project(':base')
     implementation project(':core')
+    implementation project(':util')
     implementation project(':navigation')
     implementation project(':readersupport')
 }

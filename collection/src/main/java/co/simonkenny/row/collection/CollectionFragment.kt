@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import co.simonkenny.row.collection.browse.CollectionBrowseListAdapter
 import co.simonkenny.row.collection.browse.CollectionBrowseViewModel
 import co.simonkenny.row.collection.databinding.FragCollectionBinding
-import co.simonkenny.row.core.UiState
+import co.simonkenny.row.util.UiState
 import co.simonkenny.row.core.article.Article
 import co.simonkenny.row.core.di.FakeDI
 import co.simonkenny.row.navigation.Navigate
