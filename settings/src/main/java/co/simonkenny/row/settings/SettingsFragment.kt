@@ -1,10 +1,7 @@
 package co.simonkenny.row.settings
 
 import android.os.Bundle
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -77,6 +74,7 @@ class SettingsFragment : Fragment() {
                     ) }
             )
         }
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -93,6 +91,16 @@ class SettingsFragment : Fragment() {
                 }
             })
         viewModel.init()
+        requireActivity().invalidateOptionsMenu()
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        with (menu) {
+            findItem(R.id.action_add_to_collection).isVisible = false
+            findItem(R.id.action_share).isVisible = false
+            findItem(R.id.action_search).isVisible = false
+        }
     }
 
     private fun updateUi(pdfSettingsData: PdfSettingsData) {
