@@ -1,7 +1,11 @@
 package co.simonkenny.row.pdf
 
 import android.content.Context
+import android.graphics.Typeface
 import android.os.Environment
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.StyleSpan
 import co.simonkenny.row.readersupport.ReaderDoc
 import com.lowagie.text.*
 import com.lowagie.text.pdf.PdfWriter
@@ -9,9 +13,10 @@ import java.io.File
 import java.util.*
 
 private const val FONT_SIZE_TITLE = 20.0f
-private const val FONT_SIZE_INFO = 14.0f
-private const val FONT_SIZE_SUB_TITLE = 16.0f
+private const val FONT_SIZE_INFO = 13.0f
 private const val FONT_SIZE_BODY = 12.0f
+
+private const val LINE_SPACING_BODY = 1.4f
 
 class PdfConverter(
     private val context: Context,
@@ -19,7 +24,6 @@ class PdfConverter(
 ) {
 
     fun save(): File? {
-        val document = Document()
         // connect file output stream to document
         val outputFilename = readerDoc.title
             .replace("[^a-zA-Z0-9]", "")
@@ -44,6 +48,8 @@ class PdfConverter(
         try {
             document.open()
             with (readerDoc) {
+                // metadata
+                document.addTitle(title)
                 // header
                 document.add(Paragraph().apply {
                     add(Chunk(title,
@@ -69,14 +75,19 @@ class PdfConverter(
                     })
                     document.add(Paragraph("\n"))
                 }
-                val paragraphs = body.toString().split("\n")
+                document.add(Paragraph("\n"))
+                val paragraphs = body.splitByNewlines()
                 paragraphs.forEach cont@{
                     if (it.isEmpty()) {
                         document.add(Paragraph("\n"))
                     } else {
                         document.add(Paragraph().apply {
-                            add(Chunk(it,
-                                FontFactory.getFont(FontFactory.TIMES, FONT_SIZE_BODY, Font.NORMAL)))
+                            it.parseToPdfStyledParts()
+                                .forEach { pdfStyledString ->
+                                    add(Chunk(pdfStyledString.str,
+                                        FontFactory.getFont(FontFactory.TIMES, FONT_SIZE_BODY, pdfStyledString.style)))
+                                }
+                            multipliedLeading = LINE_SPACING_BODY
                         })
                     }
                 }
@@ -88,4 +99,55 @@ class PdfConverter(
             error { "Couldn't write to document" }
         }
     }
+
+    private fun Spanned.splitByNewlines(): List<Spanned> =
+        mutableListOf<Spanned>().apply {
+            var i = 0
+            while (i < this@splitByNewlines.length) {
+                val nextNewlineIdx = indexOf('\n', i)
+                if (i == nextNewlineIdx) {
+                    add(SpannableString(""))
+                } else {
+                    add(subSequence(i, nextNewlineIdx) as Spanned)
+                }
+                i = nextNewlineIdx + 1
+            }
+        }.toList()
+
+    // TODO : support more spans, like UnderlineSpan, URLSpan, SuperscriptSpan, SubscriptSpan,
+    //          StrikethroughSpan, QuoteSpan
+    private fun Spanned.parseToPdfStyledParts(): List<PdfStyledString> =
+        mutableListOf<PdfStyledString>().apply {
+            val spans: List<Pair<Int, StyleSpan>> = getSpans(0, length, StyleSpan::class.java)
+                .map { Pair(getSpanStart(it), it as StyleSpan) }
+                .sortedBy { it.first }
+            var spanIdx = 0
+            var strIdx = 0
+            while (spanIdx < spans.size && strIdx < this@parseToPdfStyledParts.length) {
+                if (strIdx < spans[spanIdx].first) {
+                    add(PdfStyledString(substring(strIdx, spans[spanIdx].first)))
+                    strIdx = spans[spanIdx].first
+                } else {
+                    add(PdfStyledString(
+                        substring(spans[spanIdx].first, getSpanEnd(spans[spanIdx].second)),
+                        when (spans[spanIdx].second.style) {
+                            Typeface.BOLD -> Font.BOLD
+                            Typeface.ITALIC -> Font.ITALIC
+                            Typeface.BOLD_ITALIC -> Font.BOLDITALIC
+                            else -> Font.NORMAL
+                        }
+                    ))
+                    strIdx = getSpanEnd(spans[spanIdx].second)
+                    spanIdx++
+                }
+            }
+            if (strIdx < this@parseToPdfStyledParts.length) {
+                add(PdfStyledString(substring(strIdx, this@parseToPdfStyledParts.length)))
+            }
+        }
+
+    data class PdfStyledString(
+        val str: String,
+        val style: Int = Font.NORMAL
+    )
 }

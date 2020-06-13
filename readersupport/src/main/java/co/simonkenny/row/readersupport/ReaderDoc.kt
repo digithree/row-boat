@@ -17,7 +17,7 @@ data class ReaderDoc(
 )
 
 fun Article.toReaderDoc(resources: Resources): ReaderDoc {
-    val dataFormatter = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    val dataFormatter = SimpleDateFormat("cccc d MMMM yyyy", Locale.getDefault())
     val _title = title ?: resources.getString(R.string.reader_doc_no_title)
 
     val dateFormatted: String? = date?.run {
