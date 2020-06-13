@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import co.simonkenny.row.core.article.DbArticle
+import co.simonkenny.row.core.article.Article
 
-@Database(entities = [DbArticle::class], version = 1, exportSchema = false)
+@Database(entities = [Article::class], version = 1, exportSchema = false)
 internal abstract class ArticleDatabase: RoomDatabase() {
 
     abstract val articleDatabaseDao: ArticleDatabaseDao

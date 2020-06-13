@@ -55,8 +55,10 @@ dependencies {
     implementation project(':search')
     implementation project(':settings')
     implementation project(':collection')
-    implementation project(':base')
+    implementation project(':pdf')
     implementation project(':navigation')
+    implementation project(':base')
+    implementation project(':core')
 
     // core
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

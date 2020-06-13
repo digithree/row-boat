@@ -52,17 +52,18 @@ class ArticleRepo {
             runBlocking {
                 var article: Article? = null
                 if (repoFetchOptions?.db != false) {
-                    article = articleDatabase?.articleDatabaseDao?.get(url)?.toArticle()
+                    article = articleDatabase?.articleDatabaseDao?.get(url)
                 }
                 if (article == null && repoFetchOptions?.mem != false) {
                     article = articleMemCacheQueue.find { it.url == url }
                 }
                 if (article == null && repoFetchOptions?.network != false) {
                     article = networkSource.fetchArticle(url)
+                        .toArticle()
                         .apply { addToMemCache(this) } // cache network only
                 }
                 if (article == null && repoFetchOptions?.errorOnFail != true) {
-                    article = Article(url)
+                    article = Article(url, Date().time)
                 }
                 article
             }
@@ -75,7 +76,7 @@ class ArticleRepo {
     fun addLocalArticle(article: Article): Completable {
         dbCheck()
         return Observable.fromCallable {
-            articleDatabase?.articleDatabaseDao?.insert(article.toDbArticle(Date().time))
+            articleDatabase?.articleDatabaseDao?.insert(article)
                 ?: error { "Could not add Article" }
         }.ignoreElements()
     }
@@ -85,7 +86,6 @@ class ArticleRepo {
         // TODO : use from value and page
         return Single.fromCallable {
             articleDatabase?.articleDatabaseDao?.getAll()
-                ?.map { it.toArticle() }
                 ?: error { "Could not get Articles" }
         }
     }
@@ -95,7 +95,7 @@ class ArticleRepo {
         return Single.fromCallable {
             articleDatabase?.articleDatabaseDao?.get(url)?.run {
                 articleDatabase?.articleDatabaseDao?.delete(this)
-                toArticle()
+                this
             } ?: error { "Could not add Article" }
         }
     }

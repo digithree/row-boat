@@ -11,4 +11,5 @@ dependencies {
     implementation project(':base')
     implementation project(':core')
     implementation project(':navigation')
+    implementation project(':readersupport')
 }

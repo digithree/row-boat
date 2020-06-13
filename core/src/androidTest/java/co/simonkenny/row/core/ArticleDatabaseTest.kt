@@ -12,6 +12,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
+import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class SleepDatabaseTest {
@@ -40,15 +41,18 @@ class SleepDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun insertAndGetArticleUsingUrl() {
-        val dbArticle = Article(
+        val article = Article(
             "A Really Cool Article",
+            Date().time,
             "https://example.com/path/to/cool/article",
             "by A Cool Writer",
-            "Cool Publisher",
-            "This should be some cool body of text"
-        ).toDbArticle()
-        articleDao.insert(dbArticle)
-        val dbArticle_fromDb = articleDao.get("https://example.com/path/to/cool/article")
-        assertEquals(dbArticle_fromDb?.url, "https://example.com/path/to/cool/article")
+            Date().time,
+            "Cool Publishing Inc.",
+            "This should be some cool body of text",
+            "tag1,tag2,tag3"
+        )
+        articleDao.insert(article)
+        val articleFromDb = articleDao.get("https://example.com/path/to/cool/article")
+        assertEquals(articleFromDb?.url, "https://example.com/path/to/cool/article")
     }
 }

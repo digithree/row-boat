@@ -30,6 +30,18 @@
 
     <string name="browse_collection_item_delete_message">Are you sure you want to delete this article?</string>
 
+    <!-- Reader Support -->
+    <string name="reader_doc_no_title">NO TITLE</string>
+    <string name="reader_doc_attribution_at_date_format">Attribution: %1$s at %2$s</string>
+    <string name="reader_doc_attribution_only_format">Attribution: %1$s</string>
+    <string name="reader_doc_attribution_date_only_format">At: %1$s</string>
+    <string name="reader_doc_publisher_format">Publisher: %1$s</string>
+    <string name="reader_doc_no_body">NO ARTICLE CONTENT</string>
+
+    <!-- PDF -->
+    <string name="pdf_share_dialog_title">Share PDF</string>
+    <string name="pdf_share_error_message">Couldn\'t share article as PDF</string>
+
     <!-- tags -->
     <string name="error_too_many_tags">Cannot select any more tags</string>
 
@@ -37,4 +49,5 @@
     <string name="cancel">Cancel</string>
     <string name="add">Add</string>
     <string name="delete">Delete</string>
+    <string name="share">Share</string>
 </resources>

@@ -3,10 +3,13 @@ package co.simonkenny.row.core.article
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import co.simonkenny.row.core.article.db.ArticleDatabase
-import java.util.*
+import co.simonkenny.row.core.article.network.ArticleNetworkData
+import co.simonkenny.row.core.article.network.IArticleNetworkDataSpec
 
-// Communicated to feature modules
+// used for DB
+@Entity(tableName = ArticleDatabase.TABLE_ARTICLE)
 data class Article (
+    @PrimaryKey
     override val url: String,
     val added: Long? = null,
     override val title: String? = null,
@@ -17,42 +20,20 @@ data class Article (
     val tags: String? = null,
     val permission: String? = null,
     val read: Boolean? = null
-): IArticle
+): IArticleNetworkDataSpec
 
-// used for DB
-@Entity(tableName = ArticleDatabase.TABLE_ARTICLE)
-internal data class DbArticle (
-    @PrimaryKey
-    override val url: String,
-    val added: Long,
-    override val title: String?,
-    override val attribution: String?,
-    override val date: Long?,
-    override val publisher: String?,
-    override val body: String?,
-    val tags: String?,
-    val permission: String?,
-    val read: Boolean?
-): IArticle
+internal fun ArticleNetworkData.toArticle() =
+    Article(
+        url = url,
+        title = title,
+        attribution = attribution,
+        date = date,
+        publisher = publisher,
+        body = body
+    )
 
 fun Article.replaceTags(tags: String?): Article =
     Article(url, added, title, attribution, date, publisher, body, tags, permission, read)
 
 fun Article.replaceTitle(title: String?): Article =
     Article(url, added, title, attribution, date, publisher, body, tags, permission, read)
-
-internal fun Article.toDbArticle(added: Long? = null): DbArticle =
-    DbArticle(url, this.added ?: added ?: Date().time, title, attribution, date, publisher, body, tags, permission, read)
-
-internal fun DbArticle.toArticle(): Article =
-    Article(url, added, title, attribution, date, publisher, body, tags, permission)
-
-// this is all we get from the ROW service
-internal interface IArticle {
-    val url: String //this is the ID used to communicate back to backend
-    val title: String?
-    val attribution: String?
-    val date: Long?
-    val publisher: String?
-    val body: String?
-}

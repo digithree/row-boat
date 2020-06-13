@@ -9,14 +9,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import co.simonkenny.row.collection.AddToCollectionBottomSheetDialogFragment
+import co.simonkenny.row.core.article.ArticleRepo
 import co.simonkenny.row.navigation.*
+import co.simonkenny.row.pdf.PdfExportHandler
 
 class AppNavigation(
+    private val articleRepo: ArticleRepo,
     private val navController: NavController
 ) {
 
     private val broadcastReceiver = object: BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
+            if (context == null) return
             when (intent?.action) {
                 DESTINATION_READER -> navController.navigate(NavigationXmlDirections
                     .articleAction(intent.getStringExtra(ARG_URL) ?: ""))
@@ -31,6 +35,11 @@ class AppNavigation(
                         .show(this@run,
                             AddToCollectionBottomSheetDialogFragment::class.java.name)
                 }
+                ACTION_EXPORT_TO_PDF -> PdfExportHandler(
+                    context,
+                    requireNotNull(intent.getStringExtra(ARG_URL)),
+                    articleRepo
+                )
             }
         }
     }
@@ -41,8 +50,7 @@ class AppNavigation(
 
     fun registerReceiver(activity: AppCompatActivity) {
         activity.registerReceiver(broadcastReceiver, IntentFilter().apply {
-            listOf(DESTINATION_READER, DESTINATION_SEARCH, DIALOG_ADD_TO_COLLECTION)
-                .forEach { addAction(it) }
+            NAVIGATION_ENDPOINTS.forEach { addAction(it) }
         })
         fragmentManager = activity.supportFragmentManager
         isRegistered = true

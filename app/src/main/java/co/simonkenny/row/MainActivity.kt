@@ -16,11 +16,14 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import co.simonkenny.row.base.Patterns
+import co.simonkenny.row.core.di.FakeDI
 import co.simonkenny.row.databinding.ActivityMainBinding
 import java.net.MalformedURLException
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
+    private val articleRepo = FakeDI.instance.articleRepo
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -34,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(this, R.id.nav_host_fragment)
 
-        appNavigation = AppNavigation(navController)
+        appNavigation = AppNavigation(articleRepo, navController)
 
         appBarConfiguration = AppBarConfiguration(setOf(
             R.id.collection_fragment,

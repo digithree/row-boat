@@ -1,0 +1,17 @@
+apply from: "$rootDir/common-lib.gradle"
+
+// no specific android config
+
+//android {
+// ...
+//}
+
+dependencies {
+    implementation project(':readersupport')
+    implementation project(':base')
+    implementation project(':core')
+
+
+    implementation "com.github.librepdf:openpdf:$open_pdf_version"
+    implementation "ro.andob.androidawt:androidawt:$android_awt_version"
+}

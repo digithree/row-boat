@@ -6,6 +6,14 @@ import android.content.Intent
 const val DESTINATION_READER = "destination_reader"
 const val DESTINATION_SEARCH = "destination_search"
 const val DIALOG_ADD_TO_COLLECTION = "dialog_add_to_collection"
+const val ACTION_EXPORT_TO_PDF = "action_export_to_pdf"
+
+val NAVIGATION_ENDPOINTS = listOf(
+    DESTINATION_READER,
+    DESTINATION_SEARCH,
+    DIALOG_ADD_TO_COLLECTION,
+    ACTION_EXPORT_TO_PDF
+)
 
 const val ARG_URL = "arg_url"
 const val ARG_TITLE = "arg_title"
@@ -30,6 +38,14 @@ class Navigate {
                     title?.run { putExtra(ARG_TITLE, this) }
                 })
         }
+
+        fun exportToPdf(context: Context, url: String) {
+            context.sendBroadcast(internalIntent(context, ACTION_EXPORT_TO_PDF)
+                .putExtra(ARG_URL, url))
+        }
+
+
+        // private helpers
 
         private fun internalIntent(context: Context, action: String) =
             Intent(action).apply {

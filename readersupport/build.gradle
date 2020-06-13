@@ -1,0 +1,13 @@
+apply from: "$rootDir/common-lib.gradle"
+
+// no specific android config
+
+//android {
+// ...
+//}
+
+
+dependencies {
+    implementation project(':base')
+    implementation project(':core')
+}
