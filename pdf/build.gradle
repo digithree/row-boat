@@ -8,7 +8,7 @@ apply from: "$rootDir/common-lib.gradle"
 
 dependencies {
     implementation project(':readersupport')
-    implementation project(':settings')
+    implementation project(':coresettings')
     implementation project(':base')
     implementation project(':core')
 

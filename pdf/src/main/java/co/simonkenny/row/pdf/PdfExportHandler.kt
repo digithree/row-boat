@@ -10,6 +10,8 @@ import androidx.core.content.FileProvider
 import co.simonkenny.row.core.FILE_PROVIDER_AUTHORITY
 import co.simonkenny.row.core.article.ArticleRepo
 import co.simonkenny.row.core.article.RepoFetchOptions
+import co.simonkenny.row.coresettings.PdfSettingsData
+import co.simonkenny.row.coresettings.SettingsRepo
 import co.simonkenny.row.readersupport.ReaderDoc
 import co.simonkenny.row.readersupport.toReaderDoc
 import kotlinx.coroutines.*
@@ -19,6 +21,7 @@ class PdfExportHandler(
     private val context: Context,
     private val url: String,
     private val articleRepo: ArticleRepo,
+    private val settingsRepo: SettingsRepo,
     dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
@@ -27,10 +30,12 @@ class PdfExportHandler(
     init {
         scope.launch {
             val readerDoc: ReaderDoc
+            val pdfExportConfig: PdfExportConfig
             try {
                 readerDoc = articleRepo.getArticle(url, RepoFetchOptions(network = false))
                     .await()
                     .toReaderDoc(context.resources)
+                pdfExportConfig = settingsRepo.getPdfSettings().toExportConfig()
             } catch (e: Exception) {
                 Log.e("PdfExportHandler", "Couldn't get article for URL")
                 Toast.makeText(context,
@@ -39,7 +44,7 @@ class PdfExportHandler(
                     .show()
                 return@launch
             }
-            PdfConverter(context, readerDoc)
+            PdfConverter(context, readerDoc, pdfExportConfig)
                 .save()
                 ?.run {
                     val uri = FileProvider.getUriForFile(context, FILE_PROVIDER_AUTHORITY, this)

@@ -23,6 +23,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     private val articleRepo = FakeDI.instance.articleRepo
+    private val settingsRepo = FakeDI.instance.settingsRepo
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(this, R.id.nav_host_fragment)
 
-        appNavigation = AppNavigation(articleRepo, navController)
+        appNavigation = AppNavigation(articleRepo, settingsRepo, navController)
 
         appBarConfiguration = AppBarConfiguration(setOf(
             R.id.settings_fragment,
@@ -94,13 +95,13 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         appNavigation.register(this)
-        FakeDI.instance.settingsRepo.register(this)
+        settingsRepo.register(this)
     }
 
     override fun onStop() {
         super.onStop()
         appNavigation.unregister(this)
-        FakeDI.instance.settingsRepo.unregister(this)
+        settingsRepo.unregister(this)
     }
 
     // private helpers

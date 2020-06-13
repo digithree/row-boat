@@ -5,3 +5,7 @@ enum class SizeData {
 }
 
 fun Int.sizeDataFromOrdinal() = SizeData.values()[this]
+
+fun sizeDataDefault() = SizeData.SIZE_MEDIUM
+
+fun sizeDataDefaultOrdinal(): Int = SizeData.SIZE_MEDIUM.ordinal

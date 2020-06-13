@@ -8,5 +8,5 @@ apply from: "$rootDir/common-lib.gradle"
 
 
 dependencies {
-    implementation project(':util')
+    api project(':util')
 }

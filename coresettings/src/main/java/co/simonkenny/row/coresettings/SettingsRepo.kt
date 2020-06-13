@@ -37,10 +37,10 @@ class SettingsRepo: RegisterableWithActivity() {
         checkPrefAccess()
         return with (requireNotNull(sharedPreferences)) {
             PdfSettingsData(
-                getInt(PREF_KEY_PDF_TEXT_SIZE, SizeData.SIZE_MEDIUM.ordinal).sizeDataFromOrdinal(),
-                getInt(PREF_KEY_PDF_LINE_SPACING_SIZE, SizeData.SIZE_MEDIUM.ordinal).sizeDataFromOrdinal(),
-                getInt(PREF_KEY_PDF_MARGIN_VERT_SIZE, SizeData.SIZE_MEDIUM.ordinal).sizeDataFromOrdinal(),
-                getInt(PREF_KEY_PDF_MARGIN_HORZ_SIZE, SizeData.SIZE_MEDIUM.ordinal).sizeDataFromOrdinal()
+                getInt(PREF_KEY_PDF_TEXT_SIZE, sizeDataDefaultOrdinal()).sizeDataFromOrdinal(),
+                getInt(PREF_KEY_PDF_LINE_SPACING_SIZE, sizeDataDefaultOrdinal()).sizeDataFromOrdinal(),
+                getInt(PREF_KEY_PDF_MARGIN_VERT_SIZE, sizeDataDefaultOrdinal()).sizeDataFromOrdinal(),
+                getInt(PREF_KEY_PDF_MARGIN_HORZ_SIZE, sizeDataDefaultOrdinal()).sizeDataFromOrdinal()
             )
         }
     }

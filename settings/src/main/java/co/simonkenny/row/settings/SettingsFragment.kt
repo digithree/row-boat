@@ -13,9 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import co.simonkenny.row.core.di.FakeDI
-import co.simonkenny.row.coresettings.PdfSettingsData
-import co.simonkenny.row.coresettings.SizeData
-import co.simonkenny.row.coresettings.sizeDataFromOrdinal
+import co.simonkenny.row.coresettings.*
 import co.simonkenny.row.settings.databinding.FragSettingsBinding
 import co.simonkenny.row.util.UiState
 
@@ -107,32 +105,21 @@ class SettingsFragment : Fragment() {
 
                 uiUpdateFreeze = true
 
-                sbSettingsPdfTextSize.progress =
-                    textSize?.ordinal ?: SizeData.SIZE_MEDIUM.ordinal
+                sbSettingsPdfTextSize.progress = textSize?.ordinal ?: sizeDataDefaultOrdinal()
                 tvSettingsPdfTextSizeValue.text = textSize?.text(resources)
-                tvSettingsPdfTextSizeValue.gravity =
-                    textGravity(textSize ?: SizeData.SIZE_MEDIUM)
+                tvSettingsPdfTextSizeValue.gravity = textGravity(textSize ?: sizeDataDefault())
 
-                sbSettingsPdfLineSpSize.progress = lineSpacingSize?.ordinal
-                    ?: SizeData.SIZE_MEDIUM.ordinal
+                sbSettingsPdfLineSpSize.progress = lineSpacingSize?.ordinal ?: sizeDataDefaultOrdinal()
                 tvSettingsPdfLineSpSizeValue.text = lineSpacingSize?.text(resources)
-                tvSettingsPdfLineSpSizeValue.gravity = textGravity(
-                    lineSpacingSize ?: SizeData.SIZE_MEDIUM
-                )
+                tvSettingsPdfLineSpSizeValue.gravity = textGravity(lineSpacingSize ?: sizeDataDefault())
 
-                sbSettingsPdfMarginVertSize.progress = marginVertSize?.ordinal
-                    ?: SizeData.SIZE_MEDIUM.ordinal
+                sbSettingsPdfMarginVertSize.progress = marginVertSize?.ordinal ?: sizeDataDefaultOrdinal()
                 tvSettingsPdfMarginVertSizeValue.text = marginVertSize?.text(resources)
-                tvSettingsPdfMarginVertSizeValue.gravity = textGravity(
-                    marginVertSize ?: SizeData.SIZE_MEDIUM
-                )
+                tvSettingsPdfMarginVertSizeValue.gravity = textGravity(marginVertSize ?: sizeDataDefault())
 
-                sbSettingsPdfMarginHorzSize.progress = marginHorzSize?.ordinal
-                    ?: SizeData.SIZE_MEDIUM.ordinal
+                sbSettingsPdfMarginHorzSize.progress = marginHorzSize?.ordinal ?: sizeDataDefaultOrdinal()
                 tvSettingsPdfMarginHorzSizeValue.text = marginHorzSize?.text(resources)
-                tvSettingsPdfMarginHorzSizeValue.gravity = textGravity(
-                    marginHorzSize ?: SizeData.SIZE_MEDIUM
-                )
+                tvSettingsPdfMarginHorzSizeValue.gravity = textGravity(marginHorzSize ?: sizeDataDefault())
 
                 uiUpdateFreeze = false
             }

@@ -10,12 +10,14 @@ import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import co.simonkenny.row.collection.AddToCollectionBottomSheetDialogFragment
 import co.simonkenny.row.core.article.ArticleRepo
+import co.simonkenny.row.coresettings.SettingsRepo
 import co.simonkenny.row.navigation.*
 import co.simonkenny.row.pdf.PdfExportHandler
 import co.simonkenny.row.util.RegisterableWithActivity
 
 class AppNavigation(
     private val articleRepo: ArticleRepo,
+    private val settingsRepo: SettingsRepo,
     private val navController: NavController
 ): RegisterableWithActivity() {
 
@@ -39,7 +41,8 @@ class AppNavigation(
                 ACTION_EXPORT_TO_PDF -> PdfExportHandler(
                     context,
                     requireNotNull(intent.getStringExtra(ARG_URL)),
-                    articleRepo
+                    articleRepo,
+                    settingsRepo
                 )
             }
         }

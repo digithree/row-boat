@@ -12,15 +12,11 @@ import com.lowagie.text.pdf.PdfWriter
 import java.io.File
 import java.util.*
 
-private const val FONT_SIZE_TITLE = 20.0f
-private const val FONT_SIZE_INFO = 13.0f
-private const val FONT_SIZE_BODY = 12.0f
-
-private const val LINE_SPACING_BODY = 1.4f
 
 class PdfConverter(
     private val context: Context,
-    private val readerDoc: ReaderDoc
+    private val readerDoc: ReaderDoc,
+    private val pdfExportConfig: PdfExportConfig
 ) {
 
     fun save(): File? {
@@ -46,32 +42,42 @@ class PdfConverter(
         val document = Document()
         PdfWriter.getInstance(document, file.outputStream())
         try {
+            document.setMargins(
+                pdfExportConfig.horzMargins,
+                pdfExportConfig.horzMargins,
+                pdfExportConfig.vertMargins,
+                pdfExportConfig.vertMargins
+            )
             document.open()
             with (readerDoc) {
                 // metadata
                 document.addTitle(title)
                 // header
                 document.add(Paragraph().apply {
+                    multipliedLeading = pdfExportConfig.lineSpacingTitle
                     add(Chunk(title,
-                        FontFactory.getFont(FontFactory.TIMES, FONT_SIZE_TITLE, Font.BOLD)))
+                        FontFactory.getFont(FontFactory.TIMES, pdfExportConfig.fontSizeTitle, Font.BOLD)))
                 })
                 document.add(Paragraph("\n"))
                 document.add(Paragraph().apply {
+                    multipliedLeading = pdfExportConfig.lineSpacingInfo
                     add(Chunk(url,
-                        FontFactory.getFont(FontFactory.TIMES, FONT_SIZE_INFO, Font.UNDERLINE)))
+                        FontFactory.getFont(FontFactory.TIMES, pdfExportConfig.fontSizeInfo, Font.UNDERLINE)))
                 })
                 document.add(Paragraph("\n"))
                 attribution?.run {
                     document.add(Paragraph().apply {
+                        multipliedLeading = pdfExportConfig.lineSpacingInfo
                         add(Chunk(this@run,
-                            FontFactory.getFont(FontFactory.TIMES, FONT_SIZE_INFO, Font.NORMAL)))
+                            FontFactory.getFont(FontFactory.TIMES, pdfExportConfig.fontSizeInfo, Font.NORMAL)))
                     })
                     document.add(Paragraph("\n"))
                 }
                 publisher?.run {
                     document.add(Paragraph().apply {
+                        multipliedLeading = pdfExportConfig.lineSpacingInfo
                         add(Chunk(this@run,
-                            FontFactory.getFont(FontFactory.TIMES, FONT_SIZE_INFO, Font.ITALIC)))
+                            FontFactory.getFont(FontFactory.TIMES, pdfExportConfig.fontSizeInfo, Font.ITALIC)))
                     })
                     document.add(Paragraph("\n"))
                 }
@@ -82,12 +88,12 @@ class PdfConverter(
                         document.add(Paragraph("\n"))
                     } else {
                         document.add(Paragraph().apply {
+                            multipliedLeading = pdfExportConfig.lineSpacingBody
                             it.parseToPdfStyledParts()
                                 .forEach { pdfStyledString ->
                                     add(Chunk(pdfStyledString.str,
-                                        FontFactory.getFont(FontFactory.TIMES, FONT_SIZE_BODY, pdfStyledString.style)))
+                                        FontFactory.getFont(FontFactory.TIMES, pdfExportConfig.fontSizeBody, pdfStyledString.style)))
                                 }
-                            multipliedLeading = LINE_SPACING_BODY
                         })
                     }
                 }
