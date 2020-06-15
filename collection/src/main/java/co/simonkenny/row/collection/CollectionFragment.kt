@@ -4,10 +4,7 @@ import android.content.DialogInterface
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isGone
@@ -103,10 +100,19 @@ class CollectionFragment : Fragment() {
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         with (menu) {
+            findItem(R.id.action_filter).isVisible = true
             findItem(R.id.action_add_to_collection).isVisible = false
             findItem(R.id.action_share).isVisible = false
             findItem(R.id.action_search).isVisible = false
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_filter) {
+            Toast.makeText(requireContext(), "Filter option not yet available", Toast.LENGTH_SHORT).show()
+            // TODO : integrate filter
+            return true
+        } else return super.onOptionsItemSelected(item)
     }
 
     private fun processObserved(observed: UiState<List<Article>>) {

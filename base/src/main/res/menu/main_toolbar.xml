@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_filter"
+        android:icon="@drawable/ic_filter_list"
+        android:title="@string/filter"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_add_to_collection"
         android:icon="@drawable/ic_playlist_add"
         android:title="@string/add_to_collection"

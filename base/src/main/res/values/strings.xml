@@ -45,6 +45,9 @@
     <!-- tags -->
     <string name="error_too_many_tags">Cannot select any more tags</string>
 
+    <!-- filter -->
+    <string name="filter">Filter</string>
+
     <!-- settings -->
     <string name="settings_pdf_title">PDF Export</string>
     <string name="settings_pdf_text_size">Text size</string>
