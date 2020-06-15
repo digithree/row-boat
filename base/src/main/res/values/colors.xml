@@ -3,6 +3,10 @@
     <color name="colorPrimary">#747474</color>
     <color name="colorPrimaryDark">#3F3F3F</color>
     <color name="colorAccent">#BDBDBD</color>
+    <color name="colorAccentWeak">#DDDDDD</color>
+
+    <color name="colorHighlight">#FFFF99</color>
+    <color name="colorHighlightWeak">#FFFFCC</color>
 
     <color name="background_light">#F6F6F6</color>
     <color name="background_alternate">#F0F0F0</color>

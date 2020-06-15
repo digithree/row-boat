@@ -59,6 +59,10 @@ class CollectionFragment : Fragment() {
                 deleteArticleWithConfirm(url)
                 return true
             }
+
+            override fun onReadStateChange(url: String, read: Boolean) {
+                viewModel.updateArticleReadState(url, read)
+            }
         }
     )
 
@@ -87,7 +91,6 @@ class CollectionFragment : Fragment() {
         viewModel.deleteArticleEvent.observe(viewLifecycleOwner, Observer {
             if (it.first != null) {
                 Toast.makeText(requireContext(), "Article delete from local Collection", Toast.LENGTH_LONG).show()
-                viewModel.fetchArticles()
             } else if (it.second != null) {
                 requireNotNull(it.second).printStackTrace()
                 Toast.makeText(requireContext(), "Failed to delete article", Toast.LENGTH_LONG).show()

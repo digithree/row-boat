@@ -13,6 +13,7 @@
     <dimen name="chip_spacing">12dp</dimen>
 
     <dimen name="list_item_padding">12dp</dimen>
+    <dimen name="list_item_inside_padding">4dp</dimen>
     <dimen name="list_item_line_padding">6dp</dimen>
     <dimen name="list_item_line_padding_large">12dp</dimen>
     <dimen name="list_item_title_size">18sp</dimen>

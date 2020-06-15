@@ -23,6 +23,7 @@ internal class CollectionBrowseListAdapter(
     interface Callback {
         fun onTap(url: String)
         fun onLongTap(url: String): Boolean
+        fun onReadStateChange(url: String, read: Boolean)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -32,6 +33,7 @@ internal class CollectionBrowseListAdapter(
         with (holder.view) {
             setAlternateBackgroundStyle(position % 2 != 0)
             with(getItem(position)) {
+                clearHandlers()
                 setPermission(context.getString(R.string.browse_collection_item_permission_local))
                 setLoadState(context.getString(
                     if (body != null) R.string.browse_collection_item_load_state_all_data
@@ -42,8 +44,10 @@ internal class CollectionBrowseListAdapter(
                 setTags(
                     tags?.takeIf { it.isNotBlank() }?.split(",") ?: emptyList()
                 )
+                setReadState(read ?: false)
                 setClickHandler { callback.onTap(url) }
                 setLongClickHandler { callback.onLongTap(url) }
+                setReadToggleHandler { read -> callback.onReadStateChange(url, read) }
             }
         }
     }

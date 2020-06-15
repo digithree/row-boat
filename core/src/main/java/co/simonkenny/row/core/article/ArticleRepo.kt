@@ -81,6 +81,14 @@ class ArticleRepo {
         }.ignoreElements()
     }
 
+    fun updateLocalArticle(article: Article): Completable {
+        dbCheck()
+        return Observable.fromCallable {
+            articleDatabase?.articleDatabaseDao?.update(article)
+                ?: error { "Could not update Article" }
+        }.ignoreElements()
+    }
+
     fun getLocalArticleList(from: Article? = null): Single<List<Article>> {
         dbCheck()
         // TODO : use from value and page

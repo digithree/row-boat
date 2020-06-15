@@ -23,11 +23,20 @@ class CollectionBrowseItemView(context: Context): LinearLayout(context) {
         )
     }
 
+    fun clearHandlers() {
+        binding.llCollectionBrowseItem.setOnClickListener(null)
+        binding.llCollectionBrowseItem.setOnLongClickListener(null)
+        binding.tbCollectionBrowseItemRead.setOnCheckedChangeListener(null)
+    }
+
     fun setClickHandler(handler: () -> Unit) =
         binding.llCollectionBrowseItem.setOnClickListener { handler() }
 
     fun setLongClickHandler(handler: () -> Boolean) =
         binding.llCollectionBrowseItem.setOnLongClickListener { handler() }
+
+    fun setReadToggleHandler(handler: (read: Boolean) -> Unit) =
+        binding.tbCollectionBrowseItemRead.setOnCheckedChangeListener { _, isChecked -> handler(isChecked) }
 
     fun setPermission(permission: String) {
         binding.tvCollectionBrowseItemPermission.text = permission
@@ -49,6 +58,10 @@ class CollectionBrowseItemView(context: Context): LinearLayout(context) {
         binding.flCollectionBrowseItem.setBackgroundColor(
             ContextCompat.getColor(context,
             if (!alternate) R.color.background_light else R.color.background_alternate ))
+    }
+
+    fun setReadState(read: Boolean) {
+        binding.tbCollectionBrowseItemRead.isChecked = read
     }
 
     fun setTags(tagsList: List<String>) {

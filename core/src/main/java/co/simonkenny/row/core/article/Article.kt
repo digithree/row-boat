@@ -37,3 +37,6 @@ fun Article.replaceTags(tags: String?): Article =
 
 fun Article.replaceTitle(title: String?): Article =
     Article(url, added, title, attribution, date, publisher, body, tags, permission, read)
+
+fun Article.replaceRead(read: Boolean): Article =
+    Article(url, added, title, attribution, date, publisher, body, tags, permission, read)

@@ -46,26 +46,49 @@
                     android:gravity="end|center_vertical"/>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_collection_browse_item_title"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lines="1"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:textSize="@dimen/list_item_title_size"
-                android:textColor="@android:color/primary_text_light"/>
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_collection_browse_item_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:textSize="@dimen/list_item_title_size"
+                        android:textColor="@android:color/primary_text_light"/>
 
-            <TextView
-                android:id="@+id/tv_collection_browse_item_subtitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/list_item_line_padding"
-                android:lines="1"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:textSize="@dimen/list_item_subtitle_size"
-                android:textColor="@android:color/secondary_text_light"/>
+                    <TextView
+                        android:id="@+id/tv_collection_browse_item_subtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/list_item_line_padding"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:textSize="@dimen/list_item_subtitle_size"
+                        android:textColor="@android:color/secondary_text_light"/>
+                </LinearLayout>
+
+                <ToggleButton
+                    android:id="@+id/tb_collection_browse_item_read"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|end"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:background="@drawable/selector_toggle_read_bg"
+                    android:textColor="@android:color/tertiary_text_light"
+                    android:textOn="@string/state_read"
+                    android:textOff="@string/state_unread"/>
+            </LinearLayout>
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/cg_collection_browse_tags"
