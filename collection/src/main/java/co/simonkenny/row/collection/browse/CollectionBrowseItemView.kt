@@ -32,8 +32,11 @@ class CollectionBrowseItemView(context: Context): LinearLayout(context) {
     fun setClickHandler(handler: () -> Unit) =
         binding.llCollectionBrowseItem.setOnClickListener { handler() }
 
-    fun setLongClickHandler(handler: () -> Boolean) =
-        binding.llCollectionBrowseItem.setOnLongClickListener { handler() }
+    fun setLongClickHandler(handler: () -> Unit) =
+        binding.llCollectionBrowseItem.setOnLongClickListener {
+            handler()
+            true
+        }
 
     fun setReadToggleHandler(handler: (read: Boolean) -> Unit) =
         binding.tbCollectionBrowseItemRead.setOnCheckedChangeListener { _, isChecked -> handler(isChecked) }
@@ -54,10 +57,15 @@ class CollectionBrowseItemView(context: Context): LinearLayout(context) {
         binding.tvCollectionBrowseItemSubtitle.text = subtitle
     }
 
-    fun setAlternateBackgroundStyle(alternate: Boolean) {
+    fun setBackgroundStyle(alternate: Boolean, selected: Boolean) {
         binding.flCollectionBrowseItem.setBackgroundColor(
             ContextCompat.getColor(context,
-            if (!alternate) R.color.background_light else R.color.background_alternate ))
+                if (selected) {
+                    R.color.colorSelected
+                } else {
+                    if (!alternate) R.color.background_light else R.color.background_alternate
+                }
+            ))
     }
 
     fun setReadState(read: Boolean) {

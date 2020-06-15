@@ -8,6 +8,8 @@
     <color name="colorHighlight">#FFFF99</color>
     <color name="colorHighlightWeak">#FFFFCC</color>
 
+    <color name="colorSelected">#BBDDFF</color>
+
     <color name="background_light">#F6F6F6</color>
     <color name="background_alternate">#F0F0F0</color>
 </resources>

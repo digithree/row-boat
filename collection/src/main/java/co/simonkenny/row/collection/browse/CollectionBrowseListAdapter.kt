@@ -22,18 +22,20 @@ internal class CollectionBrowseListAdapter(
 
     interface Callback {
         fun onTap(url: String)
-        fun onLongTap(url: String): Boolean
         fun onReadStateChange(url: String, read: Boolean)
+        fun onHasSelectedChanged(selected: List<String>)
     }
+
+    private val _selected = mutableListOf<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(CollectionBrowseItemView(parent.context))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with (holder.view) {
-            setAlternateBackgroundStyle(position % 2 != 0)
             with(getItem(position)) {
                 clearHandlers()
+                setBackgroundStyle(position % 2 != 0, _selected.contains(url))
                 setPermission(context.getString(R.string.browse_collection_item_permission_local))
                 setLoadState(context.getString(
                     if (body != null) R.string.browse_collection_item_load_state_all_data
@@ -45,8 +47,14 @@ internal class CollectionBrowseListAdapter(
                     tags?.takeIf { it.isNotBlank() }?.split(",") ?: emptyList()
                 )
                 setReadState(read ?: false)
-                setClickHandler { callback.onTap(url) }
-                setLongClickHandler { callback.onLongTap(url) }
+                setClickHandler {
+                    if (_selected.isNotEmpty()) {
+                        toggleSelection(url, position)
+                    } else {
+                        callback.onTap(url)
+                    }
+                }
+                setLongClickHandler { toggleSelection(url, position) }
                 setReadToggleHandler { read -> callback.onReadStateChange(url, read) }
             }
         }
@@ -54,5 +62,17 @@ internal class CollectionBrowseListAdapter(
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val view: CollectionBrowseItemView get() = itemView as CollectionBrowseItemView
+    }
+
+    private fun toggleSelection(url: String, adapterPosition: Int?) {
+        if (_selected.contains(url)) {
+            _selected.remove(url)
+        } else {
+            _selected.add(url)
+        }
+        callback.onHasSelectedChanged(_selected.toList())
+        adapterPosition?.run {
+            notifyItemChanged(adapterPosition)
+        }
     }
 }

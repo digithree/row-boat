@@ -34,6 +34,8 @@ class CollectionFragment : Fragment() {
     }
 
     private lateinit var binding: FragCollectionBinding
+    private lateinit var actionMenuItem: MenuItem
+    private lateinit var shareMenuItem: MenuItem
 
     private val viewModel: CollectionBrowseViewModel by lazy {
         ViewModelProvider(viewModelStore, object: ViewModelProvider.Factory {
@@ -55,13 +57,15 @@ class CollectionFragment : Fragment() {
                 Navigate.toReader(requireContext(), url)
             }
 
-            override fun onLongTap(url: String): Boolean {
-                deleteArticleWithConfirm(url)
-                return true
-            }
-
             override fun onReadStateChange(url: String, read: Boolean) {
                 viewModel.updateArticleReadState(url, read)
+            }
+
+            override fun onHasSelectedChanged(selected: List<String>) {
+                selected.isNotEmpty().run {
+                    actionMenuItem.isVisible = this
+                    shareMenuItem.isVisible = this
+                }
             }
         }
     )
@@ -103,17 +107,34 @@ class CollectionFragment : Fragment() {
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         with (menu) {
+            findItem(R.id.action_action).run {
+                actionMenuItem = this
+                isVisible = false
+            }
             findItem(R.id.action_filter).isVisible = true
             findItem(R.id.action_add_to_collection).isVisible = false
-            findItem(R.id.action_share).isVisible = false
+            findItem(R.id.action_share).run {
+                shareMenuItem = this
+                isVisible = false
+            }
             findItem(R.id.action_search).isVisible = false
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_filter) {
-            Toast.makeText(requireContext(), "Filter option not yet available", Toast.LENGTH_SHORT).show()
+        if (item.itemId == R.id.action_action) {
+            Toast.makeText(requireContext(), "Action option not yet available", Toast.LENGTH_SHORT)
+                .show()
+            // TODO : integrate action
+            return true
+        } else if (item.itemId == R.id.action_filter) {
+            Toast.makeText(requireContext(), "Filter option not yet available", Toast.LENGTH_SHORT)
+                .show()
             // TODO : integrate filter
+            return true
+        } else if (item.itemId == R.id.action_share) {
+            Toast.makeText(requireContext(), "Share option not yet available", Toast.LENGTH_SHORT).show()
+            // TODO : integrate share
             return true
         } else return super.onOptionsItemSelected(item)
     }

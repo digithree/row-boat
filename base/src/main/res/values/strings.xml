@@ -45,9 +45,6 @@
     <!-- tags -->
     <string name="error_too_many_tags">Cannot select any more tags</string>
 
-    <!-- filter -->
-    <string name="filter">Filter</string>
-
     <!-- settings -->
     <string name="settings_pdf_title">PDF Export</string>
     <string name="settings_pdf_text_size">Text size</string>
@@ -64,6 +61,8 @@
     <string name="add">Add</string>
     <string name="delete">Delete</string>
     <string name="share">Share</string>
+    <string name="filter">Filter</string>
+    <string name="action">Action</string>
 
     <!-- states -->
     <string name="state_read">Read</string>

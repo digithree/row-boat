@@ -87,6 +87,7 @@ class ReaderFragment : Fragment() {
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         with (menu) {
+            findItem(R.id.action_action).isVisible = false
             findItem(R.id.action_filter).isVisible = false
             findItem(R.id.action_add_to_collection).isVisible =
                 args.url.isNotBlank() || viewModel.readerDoc.value != null
