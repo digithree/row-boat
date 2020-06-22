@@ -26,12 +26,12 @@ class CollectionBrowseViewModel(
     private val _deleteArticleEvent = SingleLiveEvent<Pair<Article?, Throwable?>>()
     val deleteArticleEvent: LiveData<Pair<Article?, Throwable?>> = _deleteArticleEvent
 
-    fun fetchArticles(from: Article? = null) {
+    fun fetchArticles(from: Article? = null, unreadOnly: Boolean = false) {
         _articleList.postValue(UiState.Loading)
         viewModelScope.launch(dispatcher) {
             try {
                 _articleList.postValue(UiState.Success(
-                    articleRepo.getLocalArticleList(from).await()
+                    articleRepo.getLocalArticleList(from, unreadOnly).await()
                 ))
             } catch (e: Exception) {
                 _articleList.postValue(UiState.Error(e))

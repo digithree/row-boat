@@ -3,10 +3,13 @@ package co.simonkenny.row.collection
 import android.content.DialogInterface
 import android.graphics.Typeface
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.postDelayed
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -24,6 +27,7 @@ import co.simonkenny.row.core.article.Article
 import co.simonkenny.row.core.di.FakeDI
 import co.simonkenny.row.navigation.Navigate
 
+private const val UI_UPDATE_DELAY_MS = 300L
 
 class CollectionFragment : Fragment() {
 
@@ -36,6 +40,8 @@ class CollectionFragment : Fragment() {
     private lateinit var binding: FragCollectionBinding
     private lateinit var actionMenuItem: MenuItem
     private lateinit var shareMenuItem: MenuItem
+
+    private var showOnlyUnread = false
 
     private val viewModel: CollectionBrowseViewModel by lazy {
         ViewModelProvider(viewModelStore, object: ViewModelProvider.Factory {
@@ -59,6 +65,11 @@ class CollectionFragment : Fragment() {
 
             override fun onReadStateChange(url: String, read: Boolean) {
                 viewModel.updateArticleReadState(url, read)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    if (showOnlyUnread && read) {
+                        viewModel.fetchArticles(unreadOnly = showOnlyUnread)
+                    }
+                }, UI_UPDATE_DELAY_MS)
             }
 
             override fun onHasSelectedChanged(selected: List<String>) {
@@ -100,7 +111,7 @@ class CollectionFragment : Fragment() {
                 Toast.makeText(requireContext(), "Failed to delete article", Toast.LENGTH_LONG).show()
             }
         })
-        viewModel.fetchArticles()
+        viewModel.fetchArticles(unreadOnly = showOnlyUnread)
         requireActivity().invalidateOptionsMenu()
     }
 
@@ -111,7 +122,8 @@ class CollectionFragment : Fragment() {
                 actionMenuItem = this
                 isVisible = false
             }
-            findItem(R.id.action_filter).isVisible = true
+            findItem(R.id.action_filter).isVisible = !showOnlyUnread
+            findItem(R.id.action_close).isVisible = showOnlyUnread
             findItem(R.id.action_add_to_collection).isVisible = false
             findItem(R.id.action_share).run {
                 shareMenuItem = this
@@ -128,9 +140,18 @@ class CollectionFragment : Fragment() {
             // TODO : integrate action
             return true
         } else if (item.itemId == R.id.action_filter) {
-            Toast.makeText(requireContext(), "Filter option not yet available", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), "Showing only unread items", Toast.LENGTH_SHORT)
                 .show()
-            // TODO : integrate filter
+            showOnlyUnread = true
+            requireActivity().invalidateOptionsMenu()
+            viewModel.fetchArticles(unreadOnly = showOnlyUnread)
+            return true
+        } else if (item.itemId == R.id.action_close) {
+            Toast.makeText(requireContext(), "Showing all items", Toast.LENGTH_SHORT)
+                .show()
+            showOnlyUnread = false
+            requireActivity().invalidateOptionsMenu()
+            viewModel.fetchArticles(unreadOnly = showOnlyUnread)
             return true
         } else if (item.itemId == R.id.action_share) {
             Toast.makeText(requireContext(), "Share option not yet available", Toast.LENGTH_SHORT).show()

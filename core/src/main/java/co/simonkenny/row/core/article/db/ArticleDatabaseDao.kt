@@ -21,6 +21,9 @@ internal interface ArticleDatabaseDao {
     @Query("SELECT * FROM " + ArticleDatabase.TABLE_ARTICLE + " ORDER BY added DESC")
     fun getAll(): List<Article>
 
+    @Query("SELECT * FROM " + ArticleDatabase.TABLE_ARTICLE + " WHERE read = 0 OR read IS NULL ORDER BY added DESC")
+    fun getAllUnread(): List<Article>
+
     @Query("DELETE FROM " + ArticleDatabase.TABLE_ARTICLE)
     fun clear()
 }

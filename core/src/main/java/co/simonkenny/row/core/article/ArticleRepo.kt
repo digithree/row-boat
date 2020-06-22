@@ -89,12 +89,17 @@ class ArticleRepo {
         }.ignoreElements()
     }
 
-    fun getLocalArticleList(from: Article? = null): Single<List<Article>> {
+    fun getLocalArticleList(from: Article? = null, unreadOnly: Boolean = false): Single<List<Article>> {
         dbCheck()
         // TODO : use from value and page
         return Single.fromCallable {
-            articleDatabase?.articleDatabaseDao?.getAll()
-                ?: error { "Could not get Articles" }
+            if (unreadOnly) {
+                articleDatabase?.articleDatabaseDao?.getAllUnread()
+                    ?: error { "Could not get Articles" }
+            } else {
+                articleDatabase?.articleDatabaseDao?.getAll()
+                    ?: error { "Could not get Articles" }
+            }
         }
     }
 
