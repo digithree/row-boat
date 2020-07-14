@@ -87,13 +87,14 @@ class ReaderFragment : Fragment() {
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         with (menu) {
-            findItem(R.id.action_action).isVisible = false
-            findItem(R.id.action_filter).isVisible = false
             findItem(R.id.action_close).isVisible = false
+            findItem(R.id.action_action).isVisible = false
             findItem(R.id.action_add_to_collection).isVisible =
                 args.url.isNotBlank() || viewModel.readerDoc.value != null
             findItem(R.id.action_share).isVisible = true
             findItem(R.id.action_search).isVisible = true
+            findItem(R.id.action_filter_list).isVisible = false
+            findItem(R.id.action_unfilter_list).isVisible = false
         }
     }
 

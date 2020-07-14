@@ -3,43 +3,44 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_action"
-        android:icon="@drawable/ic_action"
-        android:title="@string/action"
-        app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/action_filter"
-        android:icon="@drawable/ic_filter_list"
-        android:title="@string/filter"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/action_close"
         android:icon="@drawable/ic_close"
         android:title="@string/cancel"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_action"
+        android:icon="@drawable/ic_action"
+        android:title="@string/action"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_add_to_collection"
         android:icon="@drawable/ic_playlist_add"
         android:title="@string/add_to_collection"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_share"
         android:icon="@drawable/ic_share"
         android:title="@string/share"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search"
         android:title="@string/search"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
-    <!--item
-        android:id="@+id/settings_fragment"
-        android:icon="@drawable/ic_settings"
-        android:title="@string/settings" /-->
+    <item
+        android:id="@+id/action_filter_list"
+        android:icon="@drawable/ic_filter_list"
+        android:title="@string/filter_list"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_unfilter_list"
+        android:icon="@drawable/ic_unfilter_list"
+        android:title="@string/unfilter_list"
+        app:showAsAction="always" />
 </menu>

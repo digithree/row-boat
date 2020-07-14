@@ -9,7 +9,6 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.os.postDelayed
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -38,9 +37,8 @@ class CollectionFragment : Fragment() {
     }
 
     private lateinit var binding: FragCollectionBinding
-    private lateinit var actionMenuItem: MenuItem
-    private lateinit var shareMenuItem: MenuItem
 
+    private var showHasSelection = false
     private var showOnlyUnread = false
 
     private val viewModel: CollectionBrowseViewModel by lazy {
@@ -73,10 +71,8 @@ class CollectionFragment : Fragment() {
             }
 
             override fun onHasSelectedChanged(selected: List<String>) {
-                selected.isNotEmpty().run {
-                    actionMenuItem.isVisible = this
-                    shareMenuItem.isVisible = this
-                }
+                showHasSelection = selected.isNotEmpty()
+                requireActivity().invalidateOptionsMenu()
             }
         }
     )
@@ -118,46 +114,54 @@ class CollectionFragment : Fragment() {
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         with (menu) {
-            findItem(R.id.action_action).run {
-                actionMenuItem = this
-                isVisible = false
-            }
-            findItem(R.id.action_filter).isVisible = !showOnlyUnread
-            findItem(R.id.action_close).isVisible = showOnlyUnread
+            findItem(R.id.action_close).isVisible = showHasSelection
+            findItem(R.id.action_action).isVisible = showHasSelection
             findItem(R.id.action_add_to_collection).isVisible = false
-            findItem(R.id.action_share).run {
-                shareMenuItem = this
-                isVisible = false
-            }
+            findItem(R.id.action_share).isVisible = showHasSelection
             findItem(R.id.action_search).isVisible = false
+            findItem(R.id.action_filter_list).isVisible = !showOnlyUnread
+            findItem(R.id.action_unfilter_list).isVisible = showOnlyUnread
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_action) {
-            Toast.makeText(requireContext(), "Action option not yet available", Toast.LENGTH_SHORT)
-                .show()
-            // TODO : integrate action
-            return true
-        } else if (item.itemId == R.id.action_filter) {
-            Toast.makeText(requireContext(), "Showing only unread items", Toast.LENGTH_SHORT)
-                .show()
-            showOnlyUnread = true
-            requireActivity().invalidateOptionsMenu()
-            viewModel.fetchArticles(unreadOnly = showOnlyUnread)
-            return true
-        } else if (item.itemId == R.id.action_close) {
-            Toast.makeText(requireContext(), "Showing all items", Toast.LENGTH_SHORT)
-                .show()
-            showOnlyUnread = false
-            requireActivity().invalidateOptionsMenu()
-            viewModel.fetchArticles(unreadOnly = showOnlyUnread)
-            return true
-        } else if (item.itemId == R.id.action_share) {
-            Toast.makeText(requireContext(), "Share option not yet available", Toast.LENGTH_SHORT).show()
-            // TODO : integrate share
-            return true
-        } else return super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.action_close -> {
+                Toast.makeText(requireContext(), "Clearing selection", Toast.LENGTH_SHORT)
+                    .show()
+                requireActivity().invalidateOptionsMenu()
+                collectionBrowseListAdapter.clearSelected()
+                return true
+            }
+            R.id.action_action -> {
+                Toast.makeText(requireContext(), "Action option not yet available", Toast.LENGTH_SHORT)
+                    .show()
+                // TODO : integrate action
+                return true
+            }
+            R.id.action_share -> {
+                Toast.makeText(requireContext(), "Share option not yet available", Toast.LENGTH_SHORT).show()
+                // TODO : integrate share
+                return true
+            }
+            R.id.action_filter_list -> {
+                Toast.makeText(requireContext(), "Showing only unread items", Toast.LENGTH_SHORT)
+                    .show()
+                showOnlyUnread = true
+                requireActivity().invalidateOptionsMenu()
+                viewModel.fetchArticles(unreadOnly = showOnlyUnread)
+                return true
+            }
+            R.id.action_unfilter_list -> {
+                Toast.makeText(requireContext(), "Showing all items", Toast.LENGTH_SHORT)
+                    .show()
+                showOnlyUnread = false
+                requireActivity().invalidateOptionsMenu()
+                viewModel.fetchArticles(unreadOnly = showOnlyUnread)
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     private fun processObserved(observed: UiState<List<Article>>) {
@@ -168,7 +172,7 @@ class CollectionFragment : Fragment() {
             }
             is UiState.Success -> {
                 binding.pbCollectionBrowse.isGone = true
-                collectionBrowseListAdapter.submitList(observed.data)
+                collectionBrowseListAdapter.submitListProxy(observed.data)
                 binding.rvCollectionBrowse.post {
                     showWelcomeState(collectionBrowseListAdapter.itemCount == 0)
                 }
