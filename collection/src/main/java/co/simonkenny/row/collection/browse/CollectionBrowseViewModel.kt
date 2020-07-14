@@ -23,8 +23,8 @@ class CollectionBrowseViewModel(
     private val _articleList = MutableLiveData<UiState<List<Article>>>()
     val articleList: LiveData<UiState<List<Article>>> = _articleList
 
-    private val _deleteArticleEvent = SingleLiveEvent<Pair<Article?, Throwable?>>()
-    val deleteArticleEvent: LiveData<Pair<Article?, Throwable?>> = _deleteArticleEvent
+    private val _deleteArticlesEvent = SingleLiveEvent<Pair<Any?, Throwable?>>()
+    val deleteArticlesEvent: LiveData<Pair<Any?, Throwable?>> = _deleteArticlesEvent
 
     fun fetchArticles(from: Article? = null, unreadOnly: Boolean = false) {
         _articleList.postValue(UiState.Loading)
@@ -39,16 +39,15 @@ class CollectionBrowseViewModel(
         }
     }
 
-    fun deleteArticle(url: String) {
+    fun deleteArticles(urls: List<String>) {
         viewModelScope.launch(dispatcher) {
             try {
-                _deleteArticleEvent.postValue(Pair(
-                    articleRepo.deleteLocalArticle(url).await(),
-                    null
-                ))
+                _deleteArticlesEvent.postValue(Pair(
+                    articleRepo.deleteLocalArticles(urls).await(),
+                    null))
                 fetchArticles()
             } catch (e: Exception) {
-                _deleteArticleEvent.postValue(Pair(null, e))
+                _deleteArticlesEvent.postValue(Pair(null, e))
             }
         }
     }

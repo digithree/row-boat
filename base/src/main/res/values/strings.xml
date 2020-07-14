@@ -63,7 +63,7 @@
     <string name="share">Share</string>
     <string name="filter_list">Filter List</string>
     <string name="unfilter_list">Unfilter List</string>
-    <string name="action">Action</string>
+    <string name="delete_all">Delete All</string>
 
     <!-- states -->
     <string name="state_read">Read</string>

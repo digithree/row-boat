@@ -29,6 +29,7 @@ internal class CollectionBrowseListAdapter(
     }
 
     private val _selected = mutableListOf<String>()
+    val selected: List<String> = _selected
 
     fun submitListProxy(list: List<Article>?) {
         super.submitList(list?.map { SelectableArticleWrapper(it, _selected.contains(it.url)) })

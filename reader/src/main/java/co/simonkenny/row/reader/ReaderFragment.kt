@@ -88,7 +88,7 @@ class ReaderFragment : Fragment() {
         super.onPrepareOptionsMenu(menu)
         with (menu) {
             findItem(R.id.action_close).isVisible = false
-            findItem(R.id.action_action).isVisible = false
+            findItem(R.id.action_delete_all).isVisible = false
             findItem(R.id.action_add_to_collection).isVisible =
                 args.url.isNotBlank() || viewModel.readerDoc.value != null
             findItem(R.id.action_share).isVisible = true

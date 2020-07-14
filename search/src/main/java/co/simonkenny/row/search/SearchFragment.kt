@@ -106,7 +106,7 @@ class SearchFragment : Fragment() {
         super.onPrepareOptionsMenu(menu)
         with (menu) {
             findItem(R.id.action_close).isVisible = false
-            findItem(R.id.action_action).isVisible = false
+            findItem(R.id.action_delete_all).isVisible = false
             findItem(R.id.action_add_to_collection).isVisible = false
             findItem(R.id.action_share).isVisible = false
             findItem(R.id.action_search).isVisible = true

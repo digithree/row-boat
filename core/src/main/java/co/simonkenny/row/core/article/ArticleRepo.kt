@@ -109,7 +109,20 @@ class ArticleRepo {
             articleDatabase?.articleDatabaseDao?.get(url)?.run {
                 articleDatabase?.articleDatabaseDao?.delete(this)
                 this
-            } ?: error { "Could not add Article" }
+            } ?: error { "Could not delete Article" }
+        }
+    }
+
+    fun deleteLocalArticles(urls: List<String>): Completable {
+        dbCheck()
+        // TODO : use more efficient delete all
+        return Completable.fromCallable {
+            urls.forEach {
+                articleDatabase?.articleDatabaseDao?.get(it)?.run {
+                    articleDatabase?.articleDatabaseDao?.delete(this)
+                    this
+                } ?: error { "Could not delete Article $it" }
+            }
         }
     }
 

@@ -99,12 +99,15 @@ class CollectionFragment : Fragment() {
         viewModel.articleList.observe(viewLifecycleOwner, Observer {
             processObserved(it)
         })
-        viewModel.deleteArticleEvent.observe(viewLifecycleOwner, Observer {
+        viewModel.deleteArticlesEvent.observe(viewLifecycleOwner, Observer {
             if (it.first != null) {
-                Toast.makeText(requireContext(), "Article delete from local Collection", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Articles deleted from local Collection", Toast.LENGTH_LONG).show()
+                collectionBrowseListAdapter.clearSelected()
+                viewModel.fetchArticles(unreadOnly = showOnlyUnread)
+                requireActivity().invalidateOptionsMenu()
             } else if (it.second != null) {
                 requireNotNull(it.second).printStackTrace()
-                Toast.makeText(requireContext(), "Failed to delete article", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Failed to delete articles", Toast.LENGTH_LONG).show()
             }
         })
         viewModel.fetchArticles(unreadOnly = showOnlyUnread)
@@ -115,7 +118,7 @@ class CollectionFragment : Fragment() {
         super.onPrepareOptionsMenu(menu)
         with (menu) {
             findItem(R.id.action_close).isVisible = showHasSelection
-            findItem(R.id.action_action).isVisible = showHasSelection
+            findItem(R.id.action_delete_all).isVisible = showHasSelection
             findItem(R.id.action_add_to_collection).isVisible = false
             findItem(R.id.action_share).isVisible = showHasSelection
             findItem(R.id.action_search).isVisible = false
@@ -127,16 +130,13 @@ class CollectionFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_close -> {
-                Toast.makeText(requireContext(), "Clearing selection", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(requireContext(), "Clearing selection", Toast.LENGTH_SHORT).show()
                 requireActivity().invalidateOptionsMenu()
                 collectionBrowseListAdapter.clearSelected()
                 return true
             }
-            R.id.action_action -> {
-                Toast.makeText(requireContext(), "Action option not yet available", Toast.LENGTH_SHORT)
-                    .show()
-                // TODO : integrate action
+            R.id.action_delete_all -> {
+                deleteArticlesWithConfirm()
                 return true
             }
             R.id.action_share -> {
@@ -145,16 +145,14 @@ class CollectionFragment : Fragment() {
                 return true
             }
             R.id.action_filter_list -> {
-                Toast.makeText(requireContext(), "Showing only unread items", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(requireContext(), "Showing only unread items", Toast.LENGTH_SHORT).show()
                 showOnlyUnread = true
                 requireActivity().invalidateOptionsMenu()
                 viewModel.fetchArticles(unreadOnly = showOnlyUnread)
                 return true
             }
             R.id.action_unfilter_list -> {
-                Toast.makeText(requireContext(), "Showing all items", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(requireContext(), "Showing all items", Toast.LENGTH_SHORT).show()
                 showOnlyUnread = false
                 requireActivity().invalidateOptionsMenu()
                 viewModel.fetchArticles(unreadOnly = showOnlyUnread)
@@ -196,11 +194,17 @@ class CollectionFragment : Fragment() {
         }
     }
 
-    private fun deleteArticleWithConfirm(url: String) {
+    private fun deleteArticlesWithConfirm() {
+        if (collectionBrowseListAdapter.selected.isEmpty()) {
+            Toast.makeText(requireContext(), "No selection to delete", Toast.LENGTH_LONG).show()
+            return
+        }
         val dialogClickListener =
             DialogInterface.OnClickListener { _, which ->
                 when (which) {
-                    DialogInterface.BUTTON_POSITIVE -> viewModel.deleteArticle(url)
+                    DialogInterface.BUTTON_POSITIVE -> viewModel.deleteArticles(
+                        collectionBrowseListAdapter.selected
+                    )
                     DialogInterface.BUTTON_NEGATIVE -> Log.d("CollectionFragment", "deletion cancelled")
                 }
             }
