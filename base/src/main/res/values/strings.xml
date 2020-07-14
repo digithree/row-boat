@@ -30,6 +30,9 @@
 
     <string name="browse_collection_item_delete_message">Are you sure you want to delete this article?</string>
 
+    <!-- collection support -->
+    <string name="collection_urls_share_dialog_title">Share URLs</string>
+
     <!-- Reader Support -->
     <string name="reader_doc_no_title">NO TITLE</string>
     <string name="reader_doc_attribution_at_date_format">Attribution: %1$s at %2$s</string>

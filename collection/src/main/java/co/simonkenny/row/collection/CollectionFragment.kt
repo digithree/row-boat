@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import co.simonkenny.row.collection.browse.CollectionBrowseListAdapter
 import co.simonkenny.row.collection.browse.CollectionBrowseViewModel
 import co.simonkenny.row.collection.databinding.FragCollectionBinding
+import co.simonkenny.row.collectionsupport.CollectionShareHandler
 import co.simonkenny.row.util.UiState
 import co.simonkenny.row.core.article.Article
 import co.simonkenny.row.core.di.FakeDI
@@ -140,8 +141,10 @@ class CollectionFragment : Fragment() {
                 return true
             }
             R.id.action_share -> {
-                Toast.makeText(requireContext(), "Share option not yet available", Toast.LENGTH_SHORT).show()
-                // TODO : integrate share
+                collectionBrowseListAdapter.selected.takeIf { it.isNotEmpty() }
+                    ?.run {
+                        CollectionShareHandler(requireContext(), collectionBrowseListAdapter.selected)
+                    } ?: Toast.makeText(requireContext(), "Nothing to share", Toast.LENGTH_SHORT).show()
                 return true
             }
             R.id.action_filter_list -> {

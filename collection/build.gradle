@@ -13,6 +13,7 @@ dependencies {
     implementation project(':navigation')
     implementation project(':core')
     implementation project(':util')
+    implementation project(':collectionsupport')
 
     implementation "com.android.support:design:$support_design_version"
 }
