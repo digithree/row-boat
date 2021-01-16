@@ -2,11 +2,13 @@ package co.simonkenny.row
 
 import android.app.SearchManager
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
@@ -17,8 +19,10 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import co.simonkenny.row.base.Patterns
 import co.simonkenny.row.core.di.FakeDI
 import co.simonkenny.row.databinding.ActivityMainBinding
+import co.simonkenny.row.util.isDarkMode
 import java.net.MalformedURLException
 import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -58,6 +62,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 true
             }
+            if (isDarkMode(resources)) elevation = 0f
         }
 
         // handle incoming search or URL, if any

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="darkMode"
+            type="Boolean" />
+    </data>
     <FrameLayout
         android:id="@+id/fl_collection_browse_item"
         android:layout_width="match_parent"
@@ -28,8 +33,7 @@
                     android:lines="1"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:textSize="@dimen/list_item_subtitle_size"
-                    android:textColor="@android:color/tertiary_text_light"
+                    style="@style/TextAppearance.MaterialComponents.Overline"
                     android:textStyle="italic"/>
 
                 <TextView
@@ -37,11 +41,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
                     android:lines="1"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:textSize="@dimen/list_item_subtitle_size"
-                    android:textColor="@android:color/tertiary_text_light"
+                    style="@style/TextAppearance.MaterialComponents.Overline"
                     android:textStyle="italic"
                     android:gravity="end|center_vertical"/>
             </LinearLayout>
@@ -62,8 +66,7 @@
                         android:lines="1"
                         android:maxLines="1"
                         android:ellipsize="end"
-                        android:textSize="@dimen/list_item_title_size"
-                        android:textColor="@android:color/primary_text_light"/>
+                        style="@style/TextAppearance.MaterialComponents.Headline6"/>
 
                     <TextView
                         android:id="@+id/tv_collection_browse_item_subtitle"
@@ -73,8 +76,7 @@
                         android:lines="1"
                         android:maxLines="1"
                         android:ellipsize="end"
-                        android:textSize="@dimen/list_item_subtitle_size"
-                        android:textColor="@android:color/secondary_text_light"/>
+                        style="@style/TextAppearance.MaterialComponents.Caption"/>
                 </LinearLayout>
 
                 <ToggleButton
@@ -84,7 +86,7 @@
                     android:layout_gravity="center_vertical|end"
                     android:scaleX="0.8"
                     android:scaleY="0.8"
-                    android:background="@drawable/selector_toggle_read_bg"
+                    android:background="@{darkMode ? @drawable/selector_toggle_read_bg_dark : @drawable/selector_toggle_read_bg}"
                     android:textColor="@android:color/tertiary_text_light"
                     android:textOn="@string/state_read"
                     android:textOff="@string/state_unread"/>

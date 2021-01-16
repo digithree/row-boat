@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import co.simonkenny.row.search.databinding.ViewSearchResultItemBinding
+import co.simonkenny.row.util.isDarkMode
 
 
 internal class SearchResultItemView(context: Context): LinearLayout(context) {
@@ -37,6 +38,11 @@ internal class SearchResultItemView(context: Context): LinearLayout(context) {
 
     fun setAlternateBackgroundStyle(alternate: Boolean) {
         binding.flSearchResultItem.setBackgroundColor(ContextCompat.getColor(context,
-            if (!alternate) R.color.background_light else R.color.background_alternate ))
+            if (!isDarkMode(resources)) {
+                if (!alternate) R.color.background_item_normal_light else R.color.background_item_alternate_light
+            } else {
+                if (!alternate) R.color.background_item_normal_dark else R.color.background_item_alternate_dark
+            }
+        ))
     }
 }

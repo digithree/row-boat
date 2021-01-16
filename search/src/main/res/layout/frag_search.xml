@@ -39,8 +39,7 @@
                 android:id="@+id/tv_search_welcome_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/welcome_title_size"
-                android:textColor="@android:color/primary_text_light"
+                style="@style/TextAppearance.MaterialComponents.Headline4"
                 android:text="@string/search_welcome_title"/>
 
             <TextView
@@ -49,8 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/welcome_info_vert_margin"
                 android:ellipsize="end"
-                android:textSize="@dimen/welcome_info_size"
-                android:textColor="@android:color/secondary_text_light"
+                style="@style/TextAppearance.MaterialComponents.Body1"
                 android:text="@string/search_welcome_body"/>
 
         </LinearLayout>

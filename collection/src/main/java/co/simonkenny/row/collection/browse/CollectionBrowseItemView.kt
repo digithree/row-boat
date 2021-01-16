@@ -9,12 +9,18 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import co.simonkenny.row.collection.R
 import co.simonkenny.row.collection.databinding.ViewCollectionBrowseItemBinding
+import co.simonkenny.row.util.isDarkMode
 import com.google.android.material.chip.Chip
 
 class CollectionBrowseItemView(context: Context): LinearLayout(context) {
 
     private val binding: ViewCollectionBrowseItemBinding = ViewCollectionBrowseItemBinding.inflate(
-        LayoutInflater.from(context), this, true)
+        LayoutInflater.from(context),
+        this,
+        true
+    ).apply {
+        darkMode = isDarkMode(resources)
+    }
 
     init {
         layoutParams = RecyclerView.LayoutParams(
@@ -60,10 +66,18 @@ class CollectionBrowseItemView(context: Context): LinearLayout(context) {
     fun setBackgroundStyle(alternate: Boolean, selected: Boolean) {
         binding.flCollectionBrowseItem.setBackgroundColor(
             ContextCompat.getColor(context,
-                if (selected) {
-                    R.color.colorSelected
+                if (!isDarkMode(resources)) {
+                    if (selected) {
+                        R.color.colorSelectedLight
+                    } else {
+                        if (!alternate) R.color.background_item_normal_light else R.color.background_item_alternate_light
+                    }
                 } else {
-                    if (!alternate) R.color.background_light else R.color.background_alternate
+                    if (selected) {
+                        R.color.colorSelectedDark
+                    } else {
+                        if (!alternate) R.color.background_item_normal_dark else R.color.background_item_alternate_dark
+                    }
                 }
             ))
     }

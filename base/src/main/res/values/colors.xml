@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#747474</color>
+    <color name="colorPrimaryLight">#CFCFCF</color>
     <color name="colorPrimaryDark">#3F3F3F</color>
-    <color name="colorAccent">#BDBDBD</color>
-    <color name="colorAccentWeak">#DDDDDD</color>
 
-    <color name="colorHighlight">#FFFF99</color>
-    <color name="colorHighlightWeak">#FFFFCC</color>
+    <color name="colorAccentLight">#BDBDBD</color>
+    <color name="colorAccentWeakLight">#DDDDDD</color>
 
-    <color name="colorSelected">#BBDDFF</color>
+    <color name="colorAccentDark">#3D3D3D</color>
+    <color name="colorAccentWeakDark">#555555</color>
 
-    <color name="background_light">#F6F6F6</color>
-    <color name="background_alternate">#F0F0F0</color>
+    <color name="colorHighlightLight">#FFFF99</color>
+    <color name="colorHighlightWeakLight">#FFFFCC</color>
+
+    <color name="colorHighlightDark">#CCCC33</color>
+    <color name="colorHighlightWeakDark">#999966</color>
+
+    <color name="colorSelectedLight">#BBDDFF</color>
+    <color name="colorSelectedDark">#446699</color>
+
+    <color name="background_item_normal_light">#F6F6F6</color>
+    <color name="background_item_alternate_light">#F0F0F0</color>
+
+    <color name="background_item_normal_dark">#484848</color>
+    <color name="background_item_alternate_dark">#282828</color>
 </resources>

@@ -19,8 +19,7 @@
                     android:id="@+id/tv_reader_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/article_title_size"
-                    android:textColor="@android:color/primary_text_light"
+                    style="@style/TextAppearance.MaterialComponents.Headline5"
                     android:textIsSelectable="true"/>
 
                 <TextView
@@ -29,8 +28,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/article_info_vert_margin"
                     android:ellipsize="end"
-                    android:textSize="@dimen/article_info_size"
-                    android:textColor="@android:color/secondary_text_light"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
                     android:clickable="true"
                     android:focusable="true"
                     />
@@ -41,8 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/article_info_vert_margin"
                     android:ellipsize="end"
-                    android:textSize="@dimen/article_info_size"
-                    android:textColor="@android:color/tertiary_text_light"
+                    style="@style/TextAppearance.MaterialComponents.Body2"
                     android:textIsSelectable="true"/>
 
                 <TextView
@@ -51,8 +48,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/article_info_vert_margin"
                     android:ellipsize="end"
-                    android:textSize="@dimen/article_info_size"
-                    android:textColor="@android:color/tertiary_text_light"
+                    style="@style/TextAppearance.MaterialComponents.Body2"
                     android:textIsSelectable="true"/>
 
                 <TextView
@@ -62,8 +58,7 @@
                     android:layout_marginTop="@dimen/article_info_body_top_margin"
                     android:ellipsize="end"
                     android:lineSpacingMultiplier="1.5"
-                    android:textSize="@dimen/article_body_size"
-                    android:textColor="@android:color/primary_text_light"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
                     android:textIsSelectable="true"/>
             </LinearLayout>
         </ScrollView>
@@ -80,8 +75,7 @@
                 android:id="@+id/tv_reader_welcome_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/welcome_title_size"
-                android:textColor="@android:color/primary_text_light"
+                style="@style/TextAppearance.MaterialComponents.Headline4"
                 android:text="@string/reader_welcome_title"/>
 
             <TextView
@@ -90,8 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/welcome_info_vert_margin"
                 android:ellipsize="end"
-                android:textSize="@dimen/welcome_info_size"
-                android:textColor="@android:color/secondary_text_light"
+                style="@style/TextAppearance.MaterialComponents.Body1"
                 android:text="@string/reader_welcome_body"/>
 
         </LinearLayout>
