@@ -70,7 +70,14 @@ class ReaderFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.readerDoc.observe(viewLifecycleOwner,
-            Observer { processObserved(it) })
+            { processObserved(it) }
+        )
+        viewModel.readerTransientError.observe(viewLifecycleOwner, {
+            binding.pbReader.isGone = true
+            showWelcomeState(false)
+            it.printStackTrace()
+            Toast.makeText(context, "Error fetching article for URL ${args.url}", Toast.LENGTH_SHORT).show()
+        })
         Log.d("ReaderFragment", "URL: $args.url")
         when {
             args.url.isNotBlank() -> {
@@ -127,14 +134,14 @@ class ReaderFragment : Fragment() {
                 setData(observed.data)
             }
             is UiState.Error -> {
-                binding.pbReader.isGone = true
-                showWelcomeState(false)
-                observed.exception.printStackTrace()
-                Toast.makeText(context, "Error fetching article for URL ${args.url}", Toast.LENGTH_SHORT).show()
+                // ignored, handled by readerTransientError observer
             }
             is UiState.Loading -> {
                 binding.pbReader.isVisible = true
                 showWelcomeState(false)
+            }
+            UiState.None -> {
+                // ignored
             }
         }
     }

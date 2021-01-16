@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.simonkenny.row.base.SingleLiveEvent
 import co.simonkenny.row.core.article.ArticleRepo
 import co.simonkenny.row.core.article.RepoFetchOptions
 import co.simonkenny.row.readersupport.ReaderDoc
@@ -24,6 +25,9 @@ class ReaderViewModel(
     private val _readerDoc = MutableLiveData<UiState<ReaderDoc>>()
     val readerDoc: LiveData<UiState<ReaderDoc>> = _readerDoc
 
+    private val _readerTransientError = SingleLiveEvent<Exception>()
+    val readerTransientError: LiveData<Exception> = _readerTransientError
+
     fun fetchArticle(url: String) {
         _readerDoc.postValue(UiState.Loading)
         viewModelScope.launch(dispatcher) {
@@ -33,6 +37,7 @@ class ReaderViewModel(
                 _readerDoc.postValue(UiState.Success(article.toReaderDoc(resources)))
             } catch (e: Exception) {
                 _readerDoc.postValue(UiState.Error(e))
+                _readerTransientError.postValue(e)
             }
         }
     }
