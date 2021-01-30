@@ -8,6 +8,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
+import co.simonkenny.airtable.AirtableExportHandler
+import co.simonkenny.airtable.AirtableRepo
 import co.simonkenny.row.collection.AddToCollectionBottomSheetDialogFragment
 import co.simonkenny.row.core.article.ArticleRepo
 import co.simonkenny.row.coresettings.SettingsRepo
@@ -18,6 +20,7 @@ import co.simonkenny.row.util.RegisterableWithActivity
 class AppNavigation(
     private val articleRepo: ArticleRepo,
     private val settingsRepo: SettingsRepo,
+    private val airtableRepo: AirtableRepo,
     private val navController: NavController
 ): RegisterableWithActivity() {
 
@@ -43,6 +46,13 @@ class AppNavigation(
                     requireNotNull(intent.getStringExtra(ARG_URL)),
                     articleRepo,
                     settingsRepo
+                )
+                ACTION_UPLOAD_TO_AIRTABLE -> AirtableExportHandler(
+                    context,
+                    requireNotNull(intent.getStringExtra(ARG_URL)),
+                    articleRepo,
+                    settingsRepo,
+                    airtableRepo
                 )
             }
         }

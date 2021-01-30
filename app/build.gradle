@@ -56,6 +56,7 @@ dependencies {
     implementation project(':settings')
     implementation project(':collection')
     implementation project(':pdf')
+    implementation project(':airtable')
     implementation project(':navigation')
     implementation project(':base')
     implementation project(':core')

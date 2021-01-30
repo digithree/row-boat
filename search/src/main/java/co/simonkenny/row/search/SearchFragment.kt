@@ -109,6 +109,7 @@ class SearchFragment : Fragment() {
             findItem(R.id.action_delete_all).isVisible = false
             findItem(R.id.action_add_to_collection).isVisible = false
             findItem(R.id.action_share).isVisible = false
+            findItem(R.id.action_upload).isVisible = false
             findItem(R.id.action_search).isVisible = true
             findItem(R.id.action_filter_list).isVisible = false
             findItem(R.id.action_unfilter_list).isVisible = false

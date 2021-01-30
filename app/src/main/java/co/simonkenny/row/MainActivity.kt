@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
     private val articleRepo = FakeDI.instance.articleRepo
     private val settingsRepo = FakeDI.instance.settingsRepo
+    private val airtableRepo = co.simonkenny.airtable.FakeDI.instance.airtableRepo
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(this, R.id.nav_host_fragment)
 
-        appNavigation = AppNavigation(articleRepo, settingsRepo, navController)
+        appNavigation = AppNavigation(articleRepo, settingsRepo, airtableRepo, navController)
 
         appBarConfiguration = AppBarConfiguration(setOf(
             R.id.settings_fragment,

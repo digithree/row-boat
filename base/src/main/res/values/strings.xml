@@ -45,6 +45,11 @@
     <string name="pdf_share_dialog_title">Share PDF</string>
     <string name="pdf_share_error_message">Couldn\'t share article as PDF</string>
 
+    <!-- Airtable -->
+    <string name="airtable_share_error_settings">Airtable settings are incomplete, please add them in settings</string>
+    <string name="airtable_share_error_general">Could not upload to Airtable</string>
+    <string name="airtable_share_success">Uploaded to Airtable!</string>
+
     <!-- tags -->
     <string name="error_too_many_tags">Cannot select any more tags</string>
 
@@ -68,6 +73,7 @@
     <string name="add">Add</string>
     <string name="delete">Delete</string>
     <string name="share">Share</string>
+    <string name="upload">Upload</string>
     <string name="filter_list">Filter List</string>
     <string name="unfilter_list">Unfilter List</string>
     <string name="delete_all">Delete All</string>

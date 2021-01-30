@@ -7,12 +7,14 @@ const val DESTINATION_READER = "destination_reader"
 const val DESTINATION_SEARCH = "destination_search"
 const val DIALOG_ADD_TO_COLLECTION = "dialog_add_to_collection"
 const val ACTION_EXPORT_TO_PDF = "action_export_to_pdf"
+const val ACTION_UPLOAD_TO_AIRTABLE = "action_upload_to_airtable"
 
 val NAVIGATION_ENDPOINTS = listOf(
     DESTINATION_READER,
     DESTINATION_SEARCH,
     DIALOG_ADD_TO_COLLECTION,
-    ACTION_EXPORT_TO_PDF
+    ACTION_EXPORT_TO_PDF,
+    ACTION_UPLOAD_TO_AIRTABLE
 )
 
 const val ARG_URL = "arg_url"
@@ -41,6 +43,11 @@ class Navigate {
 
         fun exportToPdf(context: Context, url: String) {
             context.sendBroadcast(internalIntent(context, ACTION_EXPORT_TO_PDF)
+                .putExtra(ARG_URL, url))
+        }
+
+        fun uploadToAirtable(context: Context, url: String) {
+            context.sendBroadcast(internalIntent(context, ACTION_UPLOAD_TO_AIRTABLE)
                 .putExtra(ARG_URL, url))
         }
 

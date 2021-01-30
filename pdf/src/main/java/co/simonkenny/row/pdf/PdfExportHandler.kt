@@ -38,10 +38,12 @@ class PdfExportHandler(
                 pdfExportConfig = settingsRepo.getPdfSettings().toExportConfig()
             } catch (e: Exception) {
                 Log.e("PdfExportHandler", "Couldn't get article for URL")
-                Toast.makeText(context,
+                launch(Dispatchers.Main.immediate) {
+                    Toast.makeText(context,
                         context.resources.getString(R.string.pdf_share_error_message),
                         Toast.LENGTH_LONG)
-                    .show()
+                        .show()
+                }
                 return@launch
             }
             PdfConverter(context, readerDoc, pdfExportConfig)
@@ -54,17 +56,13 @@ class PdfExportHandler(
                     shareIntent.type = MIME_TYPE_PDF
                     context.startActivity(Intent.createChooser(shareIntent,
                         context.resources.getString(R.string.pdf_share_dialog_title)))
-                } ?: postToast(context.resources.getString(R.string.pdf_share_error_message))
-        }
-    }
-
-    private fun postToast(message: String) {
-        Handler(Looper.getMainLooper()).post {
-            Toast.makeText(
-                context,
-                message,
-                Toast.LENGTH_LONG
-            ).show()
+                } ?: launch(Dispatchers.Main.immediate) {
+                        Toast.makeText(
+                            context,
+                            context.resources.getString(R.string.pdf_share_error_message),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
         }
     }
 }
