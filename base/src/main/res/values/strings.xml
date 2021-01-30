@@ -55,6 +55,10 @@
     <string name="settings_pdf_margin_horz_size">Horizontal margin size</string>
     <string name="settings_pdf_line_spacing_size">Line spacing size</string>
 
+    <string name="settings_airtable_title">Airtable</string>
+    <string name="settings_airtable_table_url">Table URL</string>
+    <string name="settings_airtable_api_key">API key</string>
+
     <string name="settings_size_small">Small</string>
     <string name="settings_size_medium">Medium</string>
     <string name="settings_size_large">Large</string>

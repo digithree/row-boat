@@ -1,120 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/settings_main_padding">
+        android:fillViewport="true">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.MaterialComponents.Headline5"
-            android:textStyle="bold"
-            android:text="@string/settings_pdf_title" />
-
-        <!-- text size -->
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/settings_item_margin_v"
-            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:text="@string/settings_pdf_text_size" />
-
-        <SeekBar
-            android:id="@+id/sb_settings_pdf_text_size"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/settings_item_margin_inner_v"
-            android:max="2" />
+            android:orientation="vertical"
+            android:padding="@dimen/settings_main_padding">
 
-        <TextView
-            android:id="@+id/tv_settings_pdf_text_size_value"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/settings_item_margin_inner_v"
-            android:gravity="center"
-            style="@style/TextAppearance.MaterialComponents.Body2"
-            android:text="@string/settings_size_medium"/>
+            <!-- PDF Export settings -->
 
-        <!-- line spacing size -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.MaterialComponents.Headline5"
+                android:textStyle="bold"
+                android:text="@string/settings_pdf_title" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/settings_item_margin_v"
-            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:text="@string/settings_pdf_line_spacing_size" />
+            <!-- text size -->
 
-        <SeekBar
-            android:id="@+id/sb_settings_pdf_line_sp_size"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/settings_item_margin_inner_v"
-            android:max="2" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/settings_item_margin_v"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:text="@string/settings_pdf_text_size" />
 
-        <TextView
-            android:id="@+id/tv_settings_pdf_line_sp_size_value"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/settings_item_margin_inner_v"
-            android:gravity="center"
-            style="@style/TextAppearance.MaterialComponents.Body2"
-            android:text="@string/settings_size_medium"/>
+            <SeekBar
+                android:id="@+id/sb_settings_pdf_text_size"
+                style="@style/Widget.AppCompat.SeekBar.Discrete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/settings_item_margin_inner_v"
+                android:max="2" />
 
-        <!-- margin vert size -->
+            <TextView
+                android:id="@+id/tv_settings_pdf_text_size_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/settings_item_margin_inner_v"
+                android:gravity="center"
+                style="@style/TextAppearance.MaterialComponents.Body2"
+                android:text="@string/settings_size_medium"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/settings_item_margin_v"
-            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:text="@string/settings_pdf_margin_vert_size" />
+            <!-- line spacing size -->
 
-        <SeekBar
-            android:id="@+id/sb_settings_pdf_margin_vert_size"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/settings_item_margin_inner_v"
-            android:max="2" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/settings_item_margin_v"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:text="@string/settings_pdf_line_spacing_size" />
 
-        <TextView
-            android:id="@+id/tv_settings_pdf_margin_vert_size_value"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/settings_item_margin_inner_v"
-            android:gravity="center"
-            style="@style/TextAppearance.MaterialComponents.Body2"
-            android:text="@string/settings_size_medium"/>
+            <SeekBar
+                android:id="@+id/sb_settings_pdf_line_sp_size"
+                style="@style/Widget.AppCompat.SeekBar.Discrete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/settings_item_margin_inner_v"
+                android:max="2" />
 
-        <!-- margin horz size -->
+            <TextView
+                android:id="@+id/tv_settings_pdf_line_sp_size_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/settings_item_margin_inner_v"
+                android:gravity="center"
+                style="@style/TextAppearance.MaterialComponents.Body2"
+                android:text="@string/settings_size_medium"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/settings_item_margin_v"
-            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:text="@string/settings_pdf_margin_horz_size" />
+            <!-- margin vert size -->
 
-        <SeekBar
-            android:id="@+id/sb_settings_pdf_margin_horz_size"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/settings_item_margin_inner_v"
-            android:max="2" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/settings_item_margin_v"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:text="@string/settings_pdf_margin_vert_size" />
 
-        <TextView
-            android:id="@+id/tv_settings_pdf_margin_horz_size_value"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/settings_item_margin_inner_v"
-            android:gravity="center"
-            style="@style/TextAppearance.MaterialComponents.Body2"
-            android:text="@string/settings_size_medium"/>
-    </LinearLayout>
+            <SeekBar
+                android:id="@+id/sb_settings_pdf_margin_vert_size"
+                style="@style/Widget.AppCompat.SeekBar.Discrete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/settings_item_margin_inner_v"
+                android:max="2" />
+
+            <TextView
+                android:id="@+id/tv_settings_pdf_margin_vert_size_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/settings_item_margin_inner_v"
+                android:gravity="center"
+                style="@style/TextAppearance.MaterialComponents.Body2"
+                android:text="@string/settings_size_medium"/>
+
+            <!-- margin horz size -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/settings_item_margin_v"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:text="@string/settings_pdf_margin_horz_size" />
+
+            <SeekBar
+                android:id="@+id/sb_settings_pdf_margin_horz_size"
+                style="@style/Widget.AppCompat.SeekBar.Discrete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/settings_item_margin_inner_v"
+                android:max="2" />
+
+            <TextView
+                android:id="@+id/tv_settings_pdf_margin_horz_size_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/settings_item_margin_inner_v"
+                android:gravity="center"
+                style="@style/TextAppearance.MaterialComponents.Body2"
+                android:text="@string/settings_size_medium"/>
+
+
+            <!-- AirTable settings -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/settings_item_margin_v_new_header"
+                style="@style/TextAppearance.MaterialComponents.Headline5"
+                android:textStyle="bold"
+                android:text="@string/settings_airtable_title" />
+
+            <!-- table URL -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/settings_item_margin_v"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:text="@string/settings_airtable_table_url" />
+
+            <EditText
+                android:id="@+id/et_settings_airtable_table_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/settings_item_margin_inner_v"
+                android:hint="@string/settings_airtable_table_url" />
+
+            <!-- API key -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/settings_item_margin_v"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:text="@string/settings_airtable_api_key" />
+
+            <EditText
+                android:id="@+id/et_settings_airtable_api_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/settings_item_margin_inner_v"
+                android:hint="@string/settings_airtable_api_key" />
+
+        </LinearLayout>
+    </ScrollView>
 </layout>

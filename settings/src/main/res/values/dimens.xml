@@ -2,6 +2,7 @@
 <resources>
     <dimen name="settings_main_padding">16dp</dimen>
 
+    <dimen name="settings_item_margin_v_new_header">36dp</dimen>
     <dimen name="settings_item_margin_v">24dp</dimen>
     <dimen name="settings_item_margin_inner_v">10dp</dimen>
 

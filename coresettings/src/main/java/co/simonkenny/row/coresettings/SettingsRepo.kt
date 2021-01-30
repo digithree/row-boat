@@ -45,6 +45,28 @@ class SettingsRepo: RegisterableWithActivity() {
         }
     }
 
+    fun setAirtableSettings(airtableSettingsData: AirtableSettingsData) {
+        checkPrefAccess()
+        with(airtableSettingsData) {
+            if (tableUrl == null && apiKey == null) return
+            with(requireNotNull(sharedPreferences).edit()) {
+                tableUrl?.run { putString(PREF_KEY_AIRTABLE_TABLE_URL, this) }
+                apiKey?.run { putString(PREF_KEY_AIRTABLE_API_KEY, this) }
+                commit()
+            }
+        }
+    }
+
+    fun getAirtableSettings(): AirtableSettingsData {
+        checkPrefAccess()
+        return with(requireNotNull(sharedPreferences)) {
+            AirtableSettingsData(
+                getString(PREF_KEY_AIRTABLE_TABLE_URL, null),
+                getString(PREF_KEY_AIRTABLE_API_KEY, null)
+            )
+        }
+    }
+
     private fun checkPrefAccess() {
         if (!isRegistered) error { "Can't access SharedPreferences for settings, need to register Activity" }
         checkNotNull(sharedPreferences) { "SharedPreference creation error" }

@@ -1,4 +1,5 @@
 apply from: "$rootDir/common-lib.gradle"
+apply from: "$rootDir/common-network.gradle"
 
 // no specific android config
 
@@ -13,20 +14,4 @@ dependencies {
     // room
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
-
-    // coroutines
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:$coroutine_version"
-
-    // retrofit2 + moshi
-    api "com.squareup.retrofit2:converter-moshi:$retrofit_version"
-    api "com.squareup.moshi:moshi:$moshi_version"
-    api "com.squareup.moshi:moshi-kotlin:$moshi_version"
-
-    // jackson
-    api "com.fasterxml.jackson.module:jackson-module-kotlin:$jackson_version"
-
-    // rx
-    api "io.reactivex.rxjava2:rxkotlin:$rx_version"
 }

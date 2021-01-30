@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.*
 import android.widget.SeekBar
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import co.simonkenny.row.core.di.FakeDI
@@ -38,9 +38,10 @@ class SettingsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.frag_settings, container, false)
         with (binding) {
+            // PDF settings UI change events
             sbSettingsPdfTextSize.setOnSeekBarChangeListener(
                 SettingsOnSeekBarChangeListener { progress ->
                     if (!uiUpdateFreeze) viewModel.updatePdfSettings(
@@ -73,6 +74,23 @@ class SettingsFragment : Fragment() {
                         )
                     ) }
             )
+            // Airtable settings UI change events
+            etSettingsAirtableTableUrl.addTextChangedListener(onTextChanged = {
+                    text, _, _, _ -> if (!uiUpdateFreeze) viewModel.updateAirtableSettings(
+                        AirtableSettingsData(
+                            tableUrl = text?.toString(),
+                            apiKey = etSettingsAirtableApiKey.text?.toString()
+                        )
+                    )
+            })
+            etSettingsAirtableApiKey.addTextChangedListener(onTextChanged = {
+                    text, _, _, _ -> if (!uiUpdateFreeze) viewModel.updateAirtableSettings(
+                AirtableSettingsData(
+                    tableUrl = etSettingsAirtableTableUrl.text?.toString(),
+                    apiKey = text?.toString()
+                )
+            )
+            })
         }
         setHasOptionsMenu(true)
         return binding.root
@@ -80,16 +98,27 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.pdfSettingsData.observe(viewLifecycleOwner,
-            Observer {
-                when (it) {
-                    is UiState.Success -> updateUi(it.data)
-                    is UiState.Error -> {
-                        it.exception.printStackTrace()
-                        Toast.makeText(requireContext(), "Couldn't access settings", Toast.LENGTH_LONG).show()
-                    }
+        viewModel.pdfSettingsData.observe(viewLifecycleOwner, {
+            when (it) {
+                is UiState.Success -> updatePdfExportUi(it.data)
+                is UiState.Error -> {
+                    it.exception.printStackTrace()
+                    Toast.makeText(requireContext(), "Couldn't access settings", Toast.LENGTH_LONG).show()
                 }
-            })
+                UiState.None, UiState.Loading -> { /*ignored*/ }
+            }
+        })
+        viewModel.airtableSettingsData.observe(viewLifecycleOwner, {
+            when (it) {
+                is UiState.Success -> updateAirtableUi(it.data)
+                is UiState.Error -> {
+                    it.exception.printStackTrace()
+                    Toast.makeText(requireContext(), "Couldn't access settings", Toast.LENGTH_LONG).show()
+
+                }
+                UiState.None, UiState.Loading -> { /*ignored*/ }
+            }
+        })
         viewModel.init()
         requireActivity().invalidateOptionsMenu()
     }
@@ -107,7 +136,7 @@ class SettingsFragment : Fragment() {
         }
     }
 
-    private fun updateUi(pdfSettingsData: PdfSettingsData) {
+    private fun updatePdfExportUi(pdfSettingsData: PdfSettingsData) {
         with (pdfSettingsData) {
             with(binding) {
                 checkNotNull(textSize)
@@ -132,6 +161,19 @@ class SettingsFragment : Fragment() {
                 sbSettingsPdfMarginHorzSize.progress = marginHorzSize?.ordinal ?: sizeDataDefaultOrdinal()
                 tvSettingsPdfMarginHorzSizeValue.text = marginHorzSize?.text(resources)
                 tvSettingsPdfMarginHorzSizeValue.gravity = textGravity(marginHorzSize ?: sizeDataDefault())
+
+                uiUpdateFreeze = false
+            }
+        }
+    }
+
+    private fun updateAirtableUi(airtableSettingsData: AirtableSettingsData) {
+        with(airtableSettingsData) {
+            with(binding) {
+                uiUpdateFreeze = true
+
+                etSettingsAirtableTableUrl.setText(tableUrl ?: "")
+                etSettingsAirtableApiKey.setText(apiKey ?: "")
 
                 uiUpdateFreeze = false
             }

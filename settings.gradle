@@ -1,3 +1,4 @@
+include ':airtable'
 include ':collectionsupport'
 include ':coresettings'
 include ':util'

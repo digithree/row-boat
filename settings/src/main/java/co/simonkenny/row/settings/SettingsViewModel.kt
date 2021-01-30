@@ -14,8 +14,12 @@ class SettingsViewModel(
     private val _pdfSettingsData = MutableLiveData<UiState<PdfSettingsData>>()
     val pdfSettingsData: LiveData<UiState<PdfSettingsData>> = _pdfSettingsData
 
+    private val _airtableSettingsData = MutableLiveData<UiState<AirtableSettingsData>>()
+    val airtableSettingsData: LiveData<UiState<AirtableSettingsData>> = _airtableSettingsData
+
     fun init() {
         postPdfSettings()
+        postAirtableSettings()
     }
 
     fun updatePdfSettings(pdfSettingsData: PdfSettingsData) {
@@ -23,11 +27,24 @@ class SettingsViewModel(
         postPdfSettings()
     }
 
+    fun updateAirtableSettings(airtableSettingsData: AirtableSettingsData) {
+        settingsRepo.setAirtableSettings(airtableSettingsData)
+        // don't post changes, does not work with EditText
+    }
+
     private fun postPdfSettings() {
         try {
             _pdfSettingsData.postValue(UiState.Success(settingsRepo.getPdfSettings()))
         } catch (e: Exception) {
             _pdfSettingsData.postValue(UiState.Error(e))
+        }
+    }
+
+    private fun postAirtableSettings() {
+        try {
+            _airtableSettingsData.postValue(UiState.Success(settingsRepo.getAirtableSettings()))
+        } catch (e: Exception) {
+            _airtableSettingsData.postValue(UiState.Error(e))
         }
     }
 }
