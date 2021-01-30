@@ -21,7 +21,7 @@ fun Article.toReaderDoc(resources: Resources): ReaderDoc {
     val _title = title ?: resources.getString(R.string.reader_doc_no_title)
 
     val dateFormatted: String? = date?.run {
-        dataFormatter.format(Date(this))
+        dataFormatter.format(Date(this * 1000L))
     }
     val _attribution = if (attribution != null && dateFormatted != null) {
         resources.getString(R.string.reader_doc_attribution_at_date_format, attribution, dateFormatted)
