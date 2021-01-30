@@ -61,8 +61,13 @@ class PdfConverter(
                 document.add(Paragraph("\n"))
                 document.add(Paragraph().apply {
                     multipliedLeading = pdfExportConfig.lineSpacingInfo
-                    add(Chunk(url,
-                        FontFactory.getFont(FontFactory.TIMES, pdfExportConfig.fontSizeInfo, Font.UNDERLINE)))
+                    add(Anchor(url,
+                        FontFactory.getFont(FontFactory.TIMES, pdfExportConfig.fontSizeInfo, Font.UNDERLINE))
+                            .apply {
+                                reference = this@with.url
+                                name = this@with.url
+                            }
+                    )
                 })
                 document.add(Paragraph("\n"))
                 attribution?.run {
