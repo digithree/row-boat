@@ -1,9 +1,0 @@
-<resources>
-    <string name="fab_option_add_article">Add Article</string>
-    <string name="fab_option_from_clipboard">From Clipboard</string>
-
-    <string name="add_article_dialog_title">Open article from URL</string>
-    <string name="add_article_dialog_go">Go</string>
-
-    <string name="from_clipboard_error">Could not copy URL from clipboard</string>
-</resources>

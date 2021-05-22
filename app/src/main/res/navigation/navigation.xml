@@ -20,18 +20,7 @@
             app:nullable="false" />
     </action>
 
-    <action
-        android:id="@+id/search_action"
-        app:destination="@+id/search_navigation">
-        <argument
-            android:name="query"
-            app:argType="string"
-            app:nullable="false" />
-    </action>
-
     <include app:graph="@navigation/reader_navigation" />
-
-    <include app:graph="@navigation/search_navigation" />
 
     <include app:graph="@navigation/settings_navigation" />
 </navigation>

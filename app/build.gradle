@@ -51,7 +51,6 @@ dependencies {
 
     // module dependencies
     implementation project(':reader')
-    implementation project(':search')
     implementation project(':settings')
     implementation project(':collection')
     implementation project(':pdf')

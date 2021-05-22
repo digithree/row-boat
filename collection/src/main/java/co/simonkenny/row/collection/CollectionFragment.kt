@@ -150,7 +150,6 @@ class CollectionFragment : Fragment() {
             findItem(R.id.action_add_to_collection).isVisible = false
             findItem(R.id.action_share).isVisible = showHasSelection
             findItem(R.id.action_upload).isVisible = false
-            findItem(R.id.action_search).isVisible = false
             findItem(R.id.action_filter_list).isVisible = !showOnlyUnread
             findItem(R.id.action_unfilter_list).isVisible = showOnlyUnread
             findItem(R.id.action_settings).isVisible = true

@@ -114,7 +114,6 @@ class ReaderFragment : Fragment() {
                 args.url.isNotBlank() || viewModel.readerDoc.value != null
             findItem(R.id.action_share).isVisible = true
             findItem(R.id.action_upload).isVisible = true
-            findItem(R.id.action_search).isVisible = true
             findItem(R.id.action_filter_list).isVisible = false
             findItem(R.id.action_unfilter_list).isVisible = false
             findItem(R.id.action_settings).isVisible = true
