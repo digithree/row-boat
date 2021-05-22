@@ -9,8 +9,8 @@ buildscript {
         build_tools_version = "29.0.3"
         min_sdk_version = 24
         target_sdk_version = 28
-        version_code = 000007
-        version_name = "0.0.7"
+        version_code = "000008"
+        version_name = "0.0.8"
         // plugins
         gradle_version = '4.1.1'
         kotlin_version = '1.4.21'
