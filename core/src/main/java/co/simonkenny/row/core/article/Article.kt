@@ -19,7 +19,8 @@ data class Article (
     override val body: String? = null,
     val tags: String? = null,
     val permission: String? = null,
-    val read: Boolean? = null
+    val read: Boolean? = null,
+    val scroll: Int? = null
 ): IArticleNetworkDataSpec
 
 internal fun ArticleNetworkData.toArticle() =
@@ -33,10 +34,13 @@ internal fun ArticleNetworkData.toArticle() =
     )
 
 fun Article.replaceTags(tags: String?): Article =
-    Article(url, added, title, attribution, date, publisher, body, tags, permission, read)
+    Article(url, added, title, attribution, date, publisher, body, tags, permission, read, scroll)
 
 fun Article.replaceTitle(title: String?): Article =
-    Article(url, added, title, attribution, date, publisher, body, tags, permission, read)
+    Article(url, added, title, attribution, date, publisher, body, tags, permission, read, scroll)
 
 fun Article.replaceRead(read: Boolean): Article =
-    Article(url, added, title, attribution, date, publisher, body, tags, permission, read)
+    Article(url, added, title, attribution, date, publisher, body, tags, permission, read, scroll)
+
+fun Article.replaceScroll(scroll: Int): Article =
+    Article(url, added, title, attribution, date, publisher, body, tags, permission, read, scroll)

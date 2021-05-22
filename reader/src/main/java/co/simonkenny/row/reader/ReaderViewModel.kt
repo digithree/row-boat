@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import co.simonkenny.row.base.SingleLiveEvent
 import co.simonkenny.row.core.article.ArticleRepo
 import co.simonkenny.row.core.article.RepoFetchOptions
+import co.simonkenny.row.core.article.replaceRead
+import co.simonkenny.row.core.article.replaceScroll
 import co.simonkenny.row.readersupport.ReaderDoc
 import co.simonkenny.row.readersupport.toReaderDoc
 import co.simonkenny.row.util.UiState
@@ -39,6 +41,22 @@ class ReaderViewModel(
                 _readerDoc.postValue(UiState.Error(e))
                 _readerTransientError.postValue(e)
             }
+        }
+    }
+
+    fun updateArticleScroll(url: String, scroll: Int) {
+        viewModelScope.launch(dispatcher) {
+            try {
+                articleRepo.updateLocalArticle(
+                    articleRepo.getArticle(url, RepoFetchOptions(network = false))
+                        .await()
+                        .replaceScroll(scroll)
+                ).await()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // silent
+            }
+            fetchArticle(url)
         }
     }
 }

@@ -13,7 +13,8 @@ data class ReaderDoc(
     val url: String,
     val attribution: String?,
     val publisher: String?,
-    val body: Spanned
+    val body: Spanned,
+    val scroll: Int?
 )
 
 private val dataFormatter = SimpleDateFormat("cccc d MMMM yyyy", Locale.US)
@@ -37,6 +38,7 @@ fun Article.toReaderDoc(resources: Resources): ReaderDoc {
         publisher?.run {
             resources.getString(R.string.reader_doc_publisher_format, this)
         },
-        body?.fromHtml() ?: SpannableString(resources.getString(R.string.reader_doc_no_body))
+        body?.fromHtml() ?: SpannableString(resources.getString(R.string.reader_doc_no_body)),
+        scroll
     )
 }

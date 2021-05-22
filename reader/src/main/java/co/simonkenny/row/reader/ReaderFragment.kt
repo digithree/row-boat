@@ -100,6 +100,11 @@ class ReaderFragment : Fragment() {
         requireActivity().invalidateOptionsMenu()
     }
 
+    override fun onPause() {
+        super.onPause()
+        if (args.url.isNotBlank()) viewModel.updateArticleScroll(args.url, binding.svReaderContent.scrollY)
+    }
+
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         with (menu) {
@@ -229,6 +234,7 @@ class ReaderFragment : Fragment() {
                 }
                 // finally, set to TextView
                 tvReaderBody.text = builder
+                scroll?.run { svReaderContent.scrollTo(0, this) }
             }
         }
     }
