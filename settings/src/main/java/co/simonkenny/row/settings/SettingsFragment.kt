@@ -134,6 +134,7 @@ class SettingsFragment : Fragment() {
             findItem(R.id.action_search).isVisible = false
             findItem(R.id.action_filter_list).isVisible = false
             findItem(R.id.action_unfilter_list).isVisible = false
+            findItem(R.id.action_settings).isVisible = false
         }
     }
 

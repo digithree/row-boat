@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <FrameLayout
-        android:id="@+id/local_collection_root"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.nambimobile.widgets.efab.ExpandableFabLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
+        android:id="@+id/local_collection_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -44,5 +43,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
-    </FrameLayout>
+
+        <com.nambimobile.widgets.efab.Overlay
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:overlay_orientation="portrait"
+            app:overlay_color="#FFFFFF"
+            app:overlay_alpha="0.3" />
+
+        <com.nambimobile.widgets.efab.ExpandableFab
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="@dimen/fab_add_article_margin"
+            android:layout_marginEnd="@dimen/fab_add_article_margin"
+            android:layout_marginRight="@dimen/fab_add_article_margin"
+            app:efab_icon="@drawable/ic_add"
+            app:efab_orientation="portrait" />
+
+        <com.nambimobile.widgets.efab.FabOption
+            android:id="@+id/fab_option_from_clipboard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_orientation="portrait"
+            app:label_text="@string/fab_option_from_clipboard"
+            android:src="@drawable/ic_clipboard" />
+
+        <com.nambimobile.widgets.efab.FabOption
+            android:id="@+id/fab_option_add_article"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_orientation="portrait"
+            app:label_text="@string/fab_option_add_article"
+            android:src="@drawable/ic_add_link" />
+
+    </com.nambimobile.widgets.efab.ExpandableFabLayout>
 </layout>

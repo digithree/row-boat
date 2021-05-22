@@ -2,24 +2,18 @@ package co.simonkenny.row
 
 import android.app.SearchManager
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.onNavDestinationSelected
-import androidx.navigation.ui.setupActionBarWithNavController
 import co.simonkenny.row.base.Patterns
 import co.simonkenny.row.core.di.FakeDI
-import co.simonkenny.row.databinding.ActivityMainBinding
-import co.simonkenny.row.util.isDarkMode
 import java.net.MalformedURLException
 import java.util.*
 
@@ -30,7 +24,6 @@ class MainActivity : AppCompatActivity() {
     private val settingsRepo = FakeDI.instance.settingsRepo
     private val airtableRepo = co.simonkenny.airtable.FakeDI.instance.airtableRepo
 
-    private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     private lateinit var appNavigation: AppNavigation
@@ -38,33 +31,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        setContentView(R.layout.activity_main)
 
         val navController = findNavController(this, R.id.nav_host_fragment)
 
         appNavigation = AppNavigation(articleRepo, settingsRepo, airtableRepo, navController)
-
-        appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.settings_fragment,
-            R.id.collection_fragment,
-            R.id.search_fragment,
-            R.id.reader_fragment
-        ))
-
-        setupActionBarWithNavController(navController, appBarConfiguration)
-
-        binding.bottomNav.apply {
-            setOnNavigationItemSelectedListener {
-                when (it.itemId) {
-                    R.id.search_action -> navController.navigate(NavigationXmlDirections.searchAction(""))
-                    R.id.article_action -> navController.navigate(NavigationXmlDirections.articleAction(""))
-                    R.id.settings_action -> navController.navigate(R.id.settings_navigation)
-                    else -> navController.navigate(it.itemId)
-                }
-                true
-            }
-            if (isDarkMode(resources)) elevation = 0f
-        }
 
         // handle incoming search or URL, if any
         handleSearchIntent(intent)

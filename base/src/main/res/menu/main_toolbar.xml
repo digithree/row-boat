@@ -49,4 +49,10 @@
         android:icon="@drawable/ic_unfilter_list"
         android:title="@string/unfilter_list"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings"
+        app:showAsAction="always" />
 </menu>

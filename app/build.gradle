@@ -12,7 +12,7 @@ android {
         applicationId "co.simonkenny.row"
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
-        versionCode version_code
+        versionCode version_code.toInteger()
         versionName version_name
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

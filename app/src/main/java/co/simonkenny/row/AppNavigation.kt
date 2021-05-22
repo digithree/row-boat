@@ -32,6 +32,7 @@ class AppNavigation(
                     .articleAction(intent.getStringExtra(ARG_URL) ?: ""))
                 DESTINATION_SEARCH -> navController.navigate(NavigationXmlDirections
                     .searchAction(intent.getStringExtra(ARG_QUERY) ?: ""))
+                DESTINATION_SETTINGS -> navController.navigate(R.id.settings_navigation)
                 DIALOG_ADD_TO_COLLECTION -> fragmentManager?.run {
                     AddToCollectionBottomSheetDialogFragment
                         .newInstance(

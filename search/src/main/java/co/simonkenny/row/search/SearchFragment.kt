@@ -113,6 +113,7 @@ class SearchFragment : Fragment() {
             findItem(R.id.action_search).isVisible = true
             findItem(R.id.action_filter_list).isVisible = false
             findItem(R.id.action_unfilter_list).isVisible = false
+            findItem(R.id.action_settings).isVisible = false
         }
     }
 

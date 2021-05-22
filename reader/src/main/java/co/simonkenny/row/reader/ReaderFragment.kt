@@ -103,26 +103,36 @@ class ReaderFragment : Fragment() {
             findItem(R.id.action_search).isVisible = true
             findItem(R.id.action_filter_list).isVisible = false
             findItem(R.id.action_unfilter_list).isVisible = false
+            findItem(R.id.action_settings).isVisible = true
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        if (item.itemId == R.id.action_add_to_collection) {
-            if (args.url.isNotBlank()) {
-                Navigate.addToCollection(requireContext(), args.url)
-            } else if (viewModel.readerDoc.value != null) {
-                getUrlFromObserved(viewModel.readerDoc.value)?.run {
-                    Navigate.addToCollection(requireContext(), this)
-                } ?: Log.e("ReaderFragment", "Cant share URL")
-            } else Log.e("ReaderFragment", "Cant share URL")
-            true
-        } else if (item.itemId == R.id.action_share) {
-            Navigate.exportToPdf(requireContext(), requireNotNull(getUrlFromObserved(viewModel.readerDoc.value)))
-            true
-        } else if (item.itemId == R.id.action_upload) {
-            Navigate.uploadToAirtable(requireContext(), requireNotNull(getUrlFromObserved(viewModel.readerDoc.value)))
-            true
-        } else super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.action_add_to_collection -> {
+                if (args.url.isNotBlank()) {
+                    Navigate.addToCollection(requireContext(), args.url)
+                } else if (viewModel.readerDoc.value != null) {
+                    getUrlFromObserved(viewModel.readerDoc.value)?.run {
+                        Navigate.addToCollection(requireContext(), this)
+                    } ?: Log.e("ReaderFragment", "Cant share URL")
+                } else Log.e("ReaderFragment", "Cant share URL")
+                true
+            }
+            R.id.action_share -> {
+                Navigate.exportToPdf(requireContext(), requireNotNull(getUrlFromObserved(viewModel.readerDoc.value)))
+                true
+            }
+            R.id.action_upload -> {
+                Navigate.uploadToAirtable(requireContext(), requireNotNull(getUrlFromObserved(viewModel.readerDoc.value)))
+                true
+            }
+            R.id.action_settings -> {
+                Navigate.toSettings(requireContext())
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
 
     private fun getUrlFromObserved(observed: UiState<ReaderDoc>?): String? =
         when (observed) {
