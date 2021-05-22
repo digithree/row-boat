@@ -14,7 +14,7 @@ internal class CollectionBrowseListAdapter(
 ): ListAdapter<CollectionBrowseListAdapter.SelectableArticleWrapper, CollectionBrowseListAdapter.ViewHolder>(
     object: DiffUtil.ItemCallback<SelectableArticleWrapper>() {
         override fun areItemsTheSame(oldItem: SelectableArticleWrapper, newItem: SelectableArticleWrapper): Boolean =
-            oldItem.id == newItem.id
+            oldItem == newItem
 
         override fun areContentsTheSame(oldItem: SelectableArticleWrapper, newItem: SelectableArticleWrapper): Boolean =
             oldItem.article.toString() == newItem.article.toString()
@@ -89,7 +89,6 @@ internal class CollectionBrowseListAdapter(
     data class SelectableArticleWrapper(
         val article: Article,
         var selected: Boolean = false,
-        val id: String = UUID.randomUUID().toString()
     )
 
     private fun toggleSelection(url: String, adapterPosition: Int?) {
