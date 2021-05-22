@@ -13,6 +13,9 @@
     <string name="reader_welcome_title">Reader</string>
     <string name="reader_welcome_body">To view a webpage in the reader, tap the search icon and enter a URL.\n\nYou can also share a URL with this app from a different app, such as web browser.</string>
 
+    <string name="reader_retry_message">Reader failed to load article.</string>
+    <string name="reader_retry_button">Retry</string>
+
     <!-- search -->
     <string name="search_welcome_title">Search</string>
     <string name="search_welcome_body">To search, tap on the search icon above.\n\nThis app can also receive shared searches.</string>

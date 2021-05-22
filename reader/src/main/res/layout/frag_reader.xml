@@ -89,6 +89,33 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_reader_retry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/welcome_margin"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_reader_retry_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/reader_retry_message"/>
+
+            <Button
+                android:id="@+id/btn_reader_retry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/welcome_info_vert_margin"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/reader_retry_button" />
+
+        </LinearLayout>
+
         <ProgressBar
             android:id="@+id/pb_reader"
             android:layout_width="wrap_content"

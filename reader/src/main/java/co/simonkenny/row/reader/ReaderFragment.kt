@@ -16,7 +16,6 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
@@ -30,6 +29,10 @@ import co.simonkenny.row.readersupport.ReaderDoc
 class ReaderFragment : Fragment() {
 
     private val articleRepo = FakeDI.instance.articleRepo
+
+    private enum class UiContainerState {
+        WELCOME, RETRY, READER
+    }
 
     private lateinit var binding: FragReaderBinding
     private val args: ReaderFragmentArgs by navArgs()
@@ -69,12 +72,18 @@ class ReaderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.btnReaderRetry.setOnClickListener {
+            if (args.url.isNotBlank()) {
+                viewModel.fetchArticle(args.url)
+                setUiContainerState(UiContainerState.READER)
+            }
+        }
         viewModel.readerDoc.observe(viewLifecycleOwner,
             { processObserved(it) }
         )
         viewModel.readerTransientError.observe(viewLifecycleOwner, {
             binding.pbReader.isGone = true
-            showWelcomeState(false)
+            setUiContainerState(UiContainerState.RETRY)
             it.printStackTrace()
             Toast.makeText(context, "Error fetching article for URL ${args.url}", Toast.LENGTH_SHORT).show()
         })
@@ -82,11 +91,11 @@ class ReaderFragment : Fragment() {
         when {
             args.url.isNotBlank() -> {
                 viewModel.fetchArticle(args.url)
-                showWelcomeState(false)
+                setUiContainerState(UiContainerState.READER)
             }
             viewModel.readerDoc.value != null ->
                 processObserved(requireNotNull(viewModel.readerDoc.value))
-            else -> showWelcomeState(true)
+            else -> setUiContainerState(UiContainerState.WELCOME)
         }
         requireActivity().invalidateOptionsMenu()
     }
@@ -144,7 +153,7 @@ class ReaderFragment : Fragment() {
         when (observed) {
             is UiState.Success -> {
                 binding.pbReader.isGone = true
-                showWelcomeState(false)
+                setUiContainerState(UiContainerState.READER)
                 setData(observed.data)
             }
             is UiState.Error -> {
@@ -152,7 +161,7 @@ class ReaderFragment : Fragment() {
             }
             is UiState.Loading -> {
                 binding.pbReader.isVisible = true
-                showWelcomeState(false)
+                setUiContainerState(UiContainerState.READER)
             }
             UiState.None -> {
                 // ignored
@@ -224,12 +233,25 @@ class ReaderFragment : Fragment() {
         }
     }
 
-    private fun showWelcomeState(show: Boolean) {
+    private fun setUiContainerState(state: UiContainerState) {
         with (binding) {
-            llReaderWelcome.isVisible = show
-            svReaderContent.isGone = show
-            if (show) {
-                pbReader.isVisible = false
+            when (state) {
+                UiContainerState.WELCOME -> {
+                    llReaderWelcome.isVisible = true
+                    llReaderRetry.isVisible = false
+                    svReaderContent.isVisible = false
+                }
+                UiContainerState.RETRY -> {
+                    llReaderWelcome.isVisible = false
+                    llReaderRetry.isVisible = true
+                    svReaderContent.isVisible = false
+                    pbReader.isVisible = false
+                }
+                UiContainerState.READER -> {
+                    llReaderWelcome.isVisible = false
+                    llReaderRetry.isVisible = false
+                    svReaderContent.isVisible = true
+                }
             }
         }
     }
