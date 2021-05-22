@@ -16,6 +16,7 @@ dependencies {
     implementation project(':collectionsupport')
 
     implementation "com.android.support:design:$support_design_version"
+    implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
 
-    implementation 'com.nambimobile.widgets:expandable-fab:1.0.2'
+    implementation "com.nambimobile.widgets:expandable-fab:$expandable_fab_version"
 }
